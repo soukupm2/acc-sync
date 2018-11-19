@@ -1,7 +1,9 @@
 {
-    "name": "soukupm2/acc-sync",
+    "name": "soukupm/acc-sync",
     "description": "Package for connecting accounting system with ehop.",
     "type": "library",
+    "keywords": ["accounting"],
+    "homepage": "https://github.com/soukupm2/acc-sync",
     "license": "MIT",
     "authors": [
         {
