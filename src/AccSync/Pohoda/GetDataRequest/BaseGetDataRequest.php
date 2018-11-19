@@ -2,7 +2,12 @@
 
 namespace AccSync\Pohoda\GetDataRequest;
 
-
+/**
+ * Class BaseGetDataRequest
+ *
+ * @package AccSync\Pohoda\GetDataRequest
+ * @author miroslav.soukup2@gmail.com
+ */
 abstract class BaseGetDataRequest
 {
     /**

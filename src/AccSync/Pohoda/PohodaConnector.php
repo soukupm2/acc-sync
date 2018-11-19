@@ -4,6 +4,11 @@ namespace AccSync\Pohoda;
 
 use AccSync\Pohoda\GetDataRequest\BaseGetDataRequest;
 
+/**
+ * Class PohodaConnector
+ * @package AccSync\Pohoda
+ * @author miroslav.soukup2@gmail.com
+ */
 class PohodaConnector
 {
     const USER_AGENT = 'test';
@@ -23,6 +28,10 @@ class PohodaConnector
      * @var string User login password
      */
     private $password;
+    /**
+     * @var resource $curl
+     */
+    private $curl;
 
     /**
      * PohodaConnector constructor.
@@ -69,35 +78,50 @@ class PohodaConnector
      */
     private function getCurlResponse(BaseGetDataRequest $request)
     {
-        set_time_limit(600);
+        $this->curl = curl_init();
+        $xml = $request->getXmlRequestString();
 
-        $curl = curl_init();
-        $xmldata = $request->getXmlRequestString();
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             'STW-Authorization: ' . $this->createAuthToken(),
             'Content-Type: text/xml',
-            'Content-Length: '.strlen($xmldata)
+            'Content-Length: '.strlen($xml)
         ]);
 
-        curl_setopt($curl, CURLOPT_USERAGENT, self::USERAGENT);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 300);
-        curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($curl, CURLINFO_HEADER_OUT, TRUE);
-        curl_setopt($curl, CURLOPT_URL, $this->createUrl());
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($curl, CURLOPT_POST, TRUE);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmldata);
+        curl_setopt($this->curl, CURLOPT_USERAGENT, self::USER_AGENT);
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($this->curl, CURLOPT_TIMEOUT, 300);
+        curl_setopt($this->curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($this->curl, CURLINFO_HEADER_OUT, TRUE);
+        curl_setopt($this->curl, CURLOPT_URL, $this->createUrl());
+        curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($this->curl, CURLOPT_POST, TRUE);
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $xml);
 
-        return curl_exec($curl);
+        return curl_exec($this->curl);
+    }
+
+    /**
+     * Returns an error if there is one otherwise empty string
+     *
+     * @return string
+     */
+    public function getError()
+    {
+        if (empty($this->curl))
+        {
+            throw new \BadMethodCallException('curl not initialized');
+        }
+        else
+        {
+            return (string)curl_error($this->curl);
+        }
     }
 
     /**
      * Sends the request to Pohoda API
-     * 
+     *
      * @param BaseGetDataRequest $request
      *
      * @return \DOMDocument
