@@ -37,7 +37,7 @@ class ListInvoiceRequest extends BaseGetDataRequest
     /**
      * @var string $selectedCompanies Filter name for specific company
      */
-    private $in = 'ico';
+    private $inFilter = 'ico';
 
     /**
      * @var string $invoiceType Type of invoice
@@ -119,7 +119,7 @@ class ListInvoiceRequest extends BaseGetDataRequest
 
         foreach ($ins as $in)
         {
-            $parent->addChild($this->in, $in);
+            $parent->addChild($this->inFilter, $in);
         }
     }
 }
