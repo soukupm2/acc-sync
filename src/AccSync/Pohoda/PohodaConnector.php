@@ -82,7 +82,7 @@ class PohodaConnector
     private function getCurlResponse(BaseGetDataRequest $request)
     {
         $this->curl = curl_init();
-        $xml = $request->getRequestXml()->asXML();
+        $xml = $request->getRequestXml();
 
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             'STW-Authorization: ' . $this->createAuthToken(),

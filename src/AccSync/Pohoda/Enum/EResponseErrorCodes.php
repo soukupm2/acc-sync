@@ -18,7 +18,7 @@ class EResponseErrorCodes
 
     const BAD_REQUEST_TEXT = 'Syntactical error in request';
     const UNAUTHORIZED_TEXT = 'Access denied. Please authorize';
-    const FORBIDDEN_TEXT = 'Correct request but insufficient access rights for this user';
+    const FORBIDDEN_TEXT = 'Correct request, but insufficient access rights for this user';
     const NOT_FOUND_TEXT = 'Requested document not found';
     const METHOD_NOT_ALLOWED_TEXT = 'Request with incorrect method (POST, GET..)';
     const REQUEST_TIMEOUT_TEXT = 'Time limit for request expired';

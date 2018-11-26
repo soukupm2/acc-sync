@@ -13,23 +13,23 @@ abstract class BaseGetDataRequest
     /**
      * @const XML Namespace for data
      */
-    const DATA_NAMESPACE = 'dat';
+    const DATA_NAMESPACE = 'http://www.stormware.cz/schema/version_2/data.xsd';
     /**
      * @const XML Namespace for stock
      */
-    const STOCK_NAMESPACE = 'stk';
+    const STOCK_NAMESPACE = 'http://www.stormware.cz/schema/version_2/stock.xsd';
     /**
      * @const XML Namespace for filters
      */
-    const FILTER_NAMESPACE = 'ftr';
+    const FILTER_NAMESPACE = 'http://www.stormware.cz/schema/version_2/filter.xsd';
     /**
      * @const XML Namespace for list stock
      */
-    const LIST_STOCK_NAMESPACE = 'lStk';
+    const LIST_STOCK_NAMESPACE = 'http://www.stormware.cz/schema/version_2/list_stock.xsd';
     /**
      * @const XML Namespace for type
      */
-    const TYPE_NAMESPACE = 'type';
+    const TYPE_NAMESPACE = 'http://www.stormware.cz/schema/version_2/type.xsd';
 
     /**
      * @const string Filtering new or changed records from specified day
@@ -134,7 +134,7 @@ abstract class BaseGetDataRequest
      */
     protected function addDataPackItem(\SimpleXMLElement $parent)
     {
-        $dataPackItem = $parent->addChild('dataPackItem', null, self::DATA_NAMESPACE);
+        $dataPackItem = $parent->addChild('dat:dataPackItem');
         $dataPackItem->addAttribute('id', $this->requestId);
         $dataPackItem->addAttribute('version', '2.0');
 

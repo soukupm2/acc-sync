@@ -17,6 +17,10 @@ class SuppliesRequest extends BaseGetDataRequest
      * @const Filter by store division
      */
     const FILTER_BY_STORE_DIVISION = 'storage';
+    /**
+     * @const Filter by has internet
+     */
+    const FILTER_BY_STORE_INTERNET = 'internet';
 
     /**
      * @inheritdoc
@@ -27,11 +31,11 @@ class SuppliesRequest extends BaseGetDataRequest
 
         $dataPackItem = $this->addDataPackItem($request);
 
-        $listStockRequest = $dataPackItem->addChild('listStockRequest', NULL, self::LIST_STOCK_NAMESPACE);
+        $listStockRequest = $dataPackItem->addChild('lStk:listStockRequest', NULL, self::LIST_STOCK_NAMESPACE);
         $listStockRequest->addAttribute('version', '2.0');
         $listStockRequest->addAttribute('stockVersion', '2.0');
 
-        $requestStock = $listStockRequest->addChild('requestStock', NULL, self::LIST_STOCK_NAMESPACE);
+        $requestStock = $listStockRequest->addChild('lStk:requestStock', NULL, self::LIST_STOCK_NAMESPACE);
 
         $this->requestXml = $request;
         $this->filterParent = $requestStock;
