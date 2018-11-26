@@ -2,10 +2,12 @@
 
 namespace AccSync\Pohoda;
 
+use AccSync\Pohoda\Exception\PohodaConnectionException;
 use AccSync\Pohoda\GetDataRequest\BaseGetDataRequest;
 
 /**
  * Class PohodaConnector
+ * 
  * @package AccSync\Pohoda
  * @author miroslav.soukup2@gmail.com
  */
@@ -70,7 +72,7 @@ class PohodaConnector
     }
 
     /**
-     * Sends 
+     * Sends
      *
      * @param BaseGetDataRequest $request
      *
@@ -105,9 +107,9 @@ class PohodaConnector
     /**
      * Returns an error if there is one otherwise empty string
      *
-     * @return string
+     * @throws PohodaConnectionException|\BadMethodCallException
      */
-    public function getError()
+    private function getError()
     {
         if (empty($this->curl))
         {
@@ -115,7 +117,18 @@ class PohodaConnector
         }
         else
         {
-            return (string)curl_error($this->curl);
+            $errNo = curl_errno($this->curl);
+            $httpCode = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+
+            if (in_array($httpCode, EResponseErrorCodes::$errorCodes))
+            {
+                throw new PohodaConnectionException(EResponseErrorCodes::$errorCodesToString[$httpCode], $httpCode);
+            }
+            elseif ($errNo !== 0)
+            {
+                $errString = (string)curl_error($this->curl);
+                throw new PohodaConnectionException($errString, $errNo);
+            }
         }
     }
 
@@ -125,10 +138,13 @@ class PohodaConnector
      * @param BaseGetDataRequest $request
      *
      * @return \DOMDocument
+     * @throws PohodaConnectionException
      */
     public function sendRequest(BaseGetDataRequest $request)
     {
         $response = $this->getCurlResponse($request);
+
+        $this->getError();
 
         $dom = new \DOMDocument();
         $dom->loadXML($response,LIBXML_PARSEHUGE);
