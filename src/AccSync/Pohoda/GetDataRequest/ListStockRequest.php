@@ -2,8 +2,14 @@
 
 namespace AccSync\Pohoda\GetDataRequest;
 
-
-class SuppliesRequest extends BaseGetDataRequest
+/**
+ * Class ListStockRequest
+ * Supplies / Zásoby
+ *
+ * @package AccSync\Pohoda\GetDataRequest
+ * @author miroslav.soukup2@gmail.com
+ */
+class ListStockRequest extends BaseGetDataRequest
 {
     /**
      * @const Filter by supply code

@@ -25,6 +25,10 @@ abstract class BaseGetDataRequest
     /**
      * @const XML Namespace for list stock
      */
+    const LIST_NAMESPACE = 'http://www.stormware.cz/schema/version_2/list.xsd';
+    /**
+     * @const XML Namespace for list stock
+     */
     const LIST_STOCK_NAMESPACE = 'http://www.stormware.cz/schema/version_2/list_stock.xsd';
     /**
      * @const XML Namespace for type
@@ -119,6 +123,7 @@ abstract class BaseGetDataRequest
                 . 'xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd" '
                 . 'xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" '
                 . 'xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd" '
+                . 'xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd" '
                 . 'xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" id="' . $this->requestId . '">'
             . '</dat:dataPack>');
 
@@ -156,7 +161,9 @@ abstract class BaseGetDataRequest
      * Adds filter to XML
      *
      * @param string $filterType
-     * @param mixed $value
+     * @param mixed  $value
+     *
+     * @return \SimpleXMLElement
      */
     public function addFilter($filterType, $value)
     {
@@ -175,9 +182,14 @@ abstract class BaseGetDataRequest
             $value = $this->formatDate($value);
         }
 
-        $filterType = $this->filterPrefix . $filterType;
+        if (strpos($filterType, $this->filterPrefix) === FALSE)
+        {
+            $filterType = $this->filterPrefix . $filterType;
+        }
 
-        $filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
+        $lastFilter = $filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
+
+        return $lastFilter;
     }
 
     /**
