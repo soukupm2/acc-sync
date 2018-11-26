@@ -11,6 +11,31 @@ namespace AccSync\Pohoda\GetDataRequest;
 abstract class BaseGetDataRequest
 {
     /**
+     * @const XML Namespace for data
+     */
+    const DATA_NAMESPACE = 'dat';
+    /**
+     * @const XML Namespace for stock
+     */
+    const STOCK_NAMESPACE = 'stk';
+    /**
+     * @const XML Namespace for filters
+     */
+    const FILTER_NAMESPACE = 'ftr';
+    /**
+     * @const XML Namespace for list stock
+     */
+    const LIST_STOCK_NAMESPACE = 'lStk';
+    /**
+     * @const XML Namespace for type
+     */
+    const TYPE_NAMESPACE = 'type';
+
+    /**
+     * @const string Filtering new or changed records from specified day
+     */
+    const FILTER_LAST_CHANGES = 'lastChanges';
+    /**
      * @var string $filterPrefix Prefix for every filter
      */
     private $filterPrefix = 'ftr:';
@@ -18,10 +43,6 @@ abstract class BaseGetDataRequest
      * @var string $filterPrefix Root element for filter
      */
     private $filterRootElement = 'ftr:filter';
-    /**
-     * @const string Filtering new or changed records from specified day
-     */
-    const FILTER_LAST_CHANGES = 'lastChanges';
 
     /**
      * @var string $requestId Request ID, it is in the response for identification
@@ -50,6 +71,8 @@ abstract class BaseGetDataRequest
     {
         $this->requestId = $requestId;
         $this->in = $in;
+
+        $this->constructXml();
     }
 
     /**
@@ -90,15 +113,14 @@ abstract class BaseGetDataRequest
      */
     protected function getXmlHeader()
     {
-        $xmlHeader = new \SimpleXMLElement('
-            <?xml version="1.0" encoding="Windows-1250"?>
-            <dat:dataPack xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"
-                          xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd"
-                          xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd"
-                          xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd"
-                          xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" id="' . $this->requestId . '"
-                          ico="' . $this->in . '" application="HTTP klient" version="2.0" note="' .$this->getNote() . '"
-            </dat:dataPack>');
+        $xmlHeader = new \SimpleXMLElement('<?xml version="1.0" encoding="Windows-1250"?>'
+            . '<dat:dataPack ico="' . $this->in . '" application="HTTP klient" version="2.0" note="' .$this->getNote() . '" '
+                . 'xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" '
+                . 'xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd" '
+                . 'xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" '
+                . 'xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd" '
+                . 'xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" id="' . $this->requestId . '">'
+            . '</dat:dataPack>');
 
         return $xmlHeader;
     }
@@ -112,7 +134,7 @@ abstract class BaseGetDataRequest
      */
     protected function addDataPackItem(\SimpleXMLElement $parent)
     {
-        $dataPackItem = $parent->addChild('dataPackItem');
+        $dataPackItem = $parent->addChild('dataPackItem', null, self::DATA_NAMESPACE);
         $dataPackItem->addAttribute('id', $this->requestId);
         $dataPackItem->addAttribute('version', '2.0');
 
@@ -141,7 +163,7 @@ abstract class BaseGetDataRequest
         if (!isset($this->filterParent->{$this->filterRootElement}))
         {
             $filter = $this->filterParent
-                ->addChild('ftr:filter', '', 'http://www.stormware.cz/schema/version_2/filter.xsd');
+                ->addChild('ftr:filter', null, self::FILTER_NAMESPACE);
         }
         else
         {
@@ -155,13 +177,21 @@ abstract class BaseGetDataRequest
 
         $filterType = $this->filterPrefix . $filterType;
 
-        $filter->addChild($filterType, $value);
+        $filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
     }
+
+    /**
+     * Constructs base XML
+     */
+    protected abstract function constructXml();
 
     /**
      * Returns string with XML specified for request purposes
      *
      * @return \SimpleXMLElement
      */
-    public abstract function getRequestXml();
+    public function getRequestXml()
+    {
+        return $this->requestXml->asXML();
+    }
 }

@@ -21,21 +21,19 @@ class SuppliesRequest extends BaseGetDataRequest
     /**
      * @inheritdoc
      */
-    public function getRequestXml()
+    protected function constructXml()
     {
         $request = $this->getXmlHeader();
 
         $dataPackItem = $this->addDataPackItem($request);
 
-        $listStockRequest = $dataPackItem->addChild('lStk:listStockRequest');
+        $listStockRequest = $dataPackItem->addChild('listStockRequest', NULL, self::LIST_STOCK_NAMESPACE);
         $listStockRequest->addAttribute('version', '2.0');
         $listStockRequest->addAttribute('stockVersion', '2.0');
 
-        $requestStock = $listStockRequest->addChild('lStk:requestStock');
+        $requestStock = $listStockRequest->addChild('requestStock', NULL, self::LIST_STOCK_NAMESPACE);
 
         $this->requestXml = $request;
         $this->filterParent = $requestStock;
-
-        return $request;
     }
 }
