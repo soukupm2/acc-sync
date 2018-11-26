@@ -97,7 +97,7 @@ abstract class BaseGetDataRequest
                           xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd"
                           xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd"
                           xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" id="' . $this->requestId . '"
-                          ico="' . $this->in . '" application="HTTP klient" version="2.0" note="' .$this->getNote() . '">
+                          ico="' . $this->in . '" application="HTTP klient" version="2.0" note="' .$this->getNote() . '"
             </dat:dataPack>');
 
         return $xmlHeader;
