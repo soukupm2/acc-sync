@@ -21,26 +21,20 @@ class SuppliesRequest extends BaseGetDataRequest
     /**
      * @inheritdoc
      */
-    public function getXmlRequestString()
+    public function getRequestXml()
     {
-        $request = new \SimpleXMLElement('
-            <?xml version="1.0" encoding="Windows-1250"?>
-            <dat:dataPack xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"
-                          xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd"
-                          xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd"
-                          xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd"
-                          xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" id="' . $this->requestId . '"
-                          ico="' . $this->in . '" application="HTTP klient" version="2.0" note="' .$this->getNote() . '">
-            <dat:dataPackItem id="' . $this->requestId . '" version="2.0">
-                <lStk:listStockRequest version="2.0" stockVersion="2.0">
-                  <lStk:requestStock> 
-                  </lStk:requestStock> 
-                </lStk:listStockRequest> 
-              </dat:dataPackItem> 
-            </dat:dataPack>');
+        $request = $this->getXmlHeader();
+
+        $dataPackItem = $this->addDataPackItem($request);
+
+        $listStockRequest = $dataPackItem->addChild('lStk:listStockRequest');
+        $listStockRequest->addAttribute('version', '2.0');
+        $listStockRequest->addAttribute('stockVersion', '2.0');
+
+        $requestStock = $listStockRequest->addChild('lStk:requestStock');
 
         $this->requestXml = $request;
-        $this->filterParent = 'lStk:requestStock';
+        $this->filterParent = $requestStock;
 
         return $request;
     }

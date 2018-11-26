@@ -84,6 +84,42 @@ abstract class BaseGetDataRequest
     }
 
     /**
+     * Creates header for every XML request
+     *
+     * @return \SimpleXMLElement
+     */
+    protected function getXmlHeader()
+    {
+        $xmlHeader = new \SimpleXMLElement('
+            <?xml version="1.0" encoding="Windows-1250"?>
+            <dat:dataPack xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"
+                          xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd"
+                          xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd"
+                          xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd"
+                          xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" id="' . $this->requestId . '"
+                          ico="' . $this->in . '" application="HTTP klient" version="2.0" note="' .$this->getNote() . '">
+            </dat:dataPack>');
+
+        return $xmlHeader;
+    }
+
+    /**
+     * Adds DataPackItem node
+     *
+     * @param \SimpleXMLElement $parent
+     *
+     * @return \SimpleXMLElement
+     */
+    protected function addDataPackItem(\SimpleXMLElement $parent)
+    {
+        $dataPackItem = $parent->addChild('dataPackItem');
+        $dataPackItem->addAttribute('id', $this->requestId);
+        $dataPackItem->addAttribute('version', '2.0');
+
+        return $dataPackItem;
+    }
+
+    /**
      * Formats the date for request
      *
      * @param \DateTime $date
@@ -127,5 +163,5 @@ abstract class BaseGetDataRequest
      *
      * @return \SimpleXMLElement
      */
-    public abstract function getXmlRequestString();
+    public abstract function getRequestXml();
 }
