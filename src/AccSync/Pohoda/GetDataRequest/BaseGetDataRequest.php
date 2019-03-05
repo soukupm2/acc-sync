@@ -64,6 +64,10 @@ abstract class BaseGetDataRequest
      * @var \SimpleXMLElement $filterParent Element, after which should be filter appended
      */
     protected $filterParent;
+    /**
+     * @var \SimpleXMLElement $filter Element, which contains all filter values
+     */
+    private $filter;
 
     /**
      * BaseGetDataRequest constructor.
@@ -152,9 +156,16 @@ abstract class BaseGetDataRequest
      * @param \DateTime $date
      * @return string
      */
-    protected function formatDate(\DateTime $date)
+    protected function formatDate(\DateTime $date, $includeTime = TRUE)
     {
-        return $date->format('Y-m-d') . 'T' . $date->format('H:i:s');
+        $formattedDate = $date->format('Y-m-d');
+
+        if ($includeTime)
+        {
+            $formattedDate = $formattedDate . 'T' . $date->format('H:i:s');
+        }
+
+        return $formattedDate;
     }
 
     /**
@@ -167,14 +178,10 @@ abstract class BaseGetDataRequest
      */
     public function addFilter($filterType, $value)
     {
-        if (!isset($this->filterParent->{$this->filterRootElement}))
+        if ($this->filter === NULL)
         {
-            $filter = $this->filterParent
-                ->addChild('ftr:filter', null, self::FILTER_NAMESPACE);
-        }
-        else
-        {
-            $filter = $this->filterParent->{$this->filterRootElement};
+            $this->filter = $this->filterParent
+                ->addChild($this->filterRootElement, null, self::FILTER_NAMESPACE);
         }
 
         if ($filterType === self::FILTER_LAST_CHANGES && $value instanceof \DateTime)
@@ -187,7 +194,7 @@ abstract class BaseGetDataRequest
             $filterType = $this->filterPrefix . $filterType;
         }
 
-        $lastFilter = $filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
+        $lastFilter = $this->filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
 
         return $lastFilter;
     }

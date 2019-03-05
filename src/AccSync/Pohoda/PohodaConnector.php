@@ -2,6 +2,7 @@
 
 namespace AccSync\Pohoda;
 
+use AccSync\Pohoda\DataParser\XMLParser;
 use AccSync\Pohoda\Enum\EResponseErrorCodes;
 use AccSync\Pohoda\Exception\PohodaConnectionException;
 use AccSync\Pohoda\GetDataRequest\BaseGetDataRequest;
@@ -35,6 +36,10 @@ class PohodaConnector
      * @var resource $curl
      */
     private $curl;
+    /**
+     * @var \DOMDocument $domResponse
+     */
+    private $domResponse = NULL;
 
     /**
      * PohodaConnector constructor.
@@ -135,10 +140,11 @@ class PohodaConnector
 
     /**
      * Sends the request to Pohoda API
+     * Returns \stdClass with the result data
      *
      * @param BaseGetDataRequest $request
      *
-     * @return \DOMDocument
+     * @return \stdClass
      * @throws PohodaConnectionException
      */
     public function sendRequest(BaseGetDataRequest $request)
@@ -149,6 +155,20 @@ class PohodaConnector
 
         $dom = new \DOMDocument();
         $dom->loadXML($response,LIBXML_PARSEHUGE);
-        return $dom;
+        $this->domResponse = $dom;
+
+        $result = XMLParser::parseXML($dom->saveXML());
+
+        return $result;
+    }
+
+    /**
+     * Returns original non-parsed DOM response from client
+     *
+     * @return \DOMDocument
+     */
+    public function getDOMResponse()
+    {
+        return $this->domResponse;
     }
 }

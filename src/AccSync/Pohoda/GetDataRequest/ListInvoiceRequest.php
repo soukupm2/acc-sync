@@ -21,6 +21,11 @@ class ListInvoiceRequest extends BaseGetDataRequest
     const FILTER_BY_DATE_TO = 'dateTill';
 
     /**
+     * @const Type of order: Issued
+     */
+    const INVOICE_TYPE_ISSUED = 'issuedInvoice';
+
+    /**
      * @var string $selectedCompanies Filter name for selecting companies by name
      */
     private $selectedCompanies = 'selectedCompanys';
@@ -74,13 +79,23 @@ class ListInvoiceRequest extends BaseGetDataRequest
     /**
      * Filters invoices by date range
      *
-     * @param \DateTime $from
-     * @param \DateTime $to
+     * @param \DateTime|null $from
+     * @param \DateTime|null $to
      */
-    public function addFilterDateRange(\DateTime $from, \DateTime $to)
+    public function addFilterDateRange($from, $to)
     {
-        $this->addFilter(self::FILTER_BY_DATE_FROM, $from);
-        $this->addFilter(self::FILTER_BY_DATE_TO, $to);
+        if ((!($from instanceof \DateTime) && $from !== NULL) || (!($to instanceof \DateTime) && $to !== NULL))
+        {
+            throw new \InvalidArgumentException('Invalid arguments. It must be either null or DateTime');
+        }
+        if (!empty($from))
+        {
+            $this->addFilter(self::FILTER_BY_DATE_FROM, $this->formatDate($from, FALSE));
+        }
+        if (!empty($to))
+        {
+            $this->addFilter(self::FILTER_BY_DATE_TO, $this->formatDate($to, FALSE));
+        }
     }
 
     /**
