@@ -1,6 +1,6 @@
 <?php
 
-namespace AccSync\Pohoda\DataParser;
+namespace AccSync\Pohoda\Data;
 
 class XMLParser
 {

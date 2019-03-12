@@ -2,10 +2,9 @@
 
 namespace AccSync\Pohoda;
 
-use AccSync\Pohoda\DataParser\XMLParser;
+use AccSync\Pohoda\Data\XMLParser;
 use AccSync\Pohoda\Enum\EResponseErrorCodes;
 use AccSync\Pohoda\Exception\PohodaConnectionException;
-use AccSync\Pohoda\GetDataRequest\BaseGetDataRequest;
 
 /**
  * Class PohodaConnector
@@ -80,14 +79,14 @@ class PohodaConnector
     /**
      * Sends
      *
-     * @param BaseGetDataRequest $request
+     * @param BaseRequest $request
      *
      * @return bool|string
      */
-    private function getCurlResponse(BaseGetDataRequest $request)
+    private function getCurlResponse(BaseRequest $request)
     {
         $this->curl = curl_init();
-        $xml = $request->getRequestXml();
+        $xml = $request->getRequestXml()->asXML();
 
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             'STW-Authorization: ' . $this->createAuthToken(),
@@ -142,12 +141,12 @@ class PohodaConnector
      * Sends the request to Pohoda API
      * Returns \stdClass with the result data
      *
-     * @param BaseGetDataRequest $request
+     * @param BaseRequest $request
      *
      * @return \stdClass
      * @throws PohodaConnectionException
      */
-    public function sendRequest(BaseGetDataRequest $request)
+    public function sendRequest(BaseRequest $request)
     {
         $response = $this->getCurlResponse($request);
 

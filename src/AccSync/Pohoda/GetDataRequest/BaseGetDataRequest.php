@@ -2,39 +2,21 @@
 
 namespace AccSync\Pohoda\GetDataRequest;
 
+use AccSync\Pohoda\BaseRequest;
+use AccSync\Pohoda\Data\PohodaHelper;
+
 /**
  * Class BaseGetDataRequest
  *
- * @package AccSync\Pohoda\GetDataRequest
+ * @package AccSync\Pohoda\BaseRequest
  * @author miroslav.soukup2@gmail.com
  */
-abstract class BaseGetDataRequest
+abstract class BaseGetDataRequest extends BaseRequest
 {
-    /**
-     * @const XML Namespace for data
-     */
-    const DATA_NAMESPACE = 'http://www.stormware.cz/schema/version_2/data.xsd';
-    /**
-     * @const XML Namespace for stock
-     */
-    const STOCK_NAMESPACE = 'http://www.stormware.cz/schema/version_2/stock.xsd';
     /**
      * @const XML Namespace for filters
      */
     const FILTER_NAMESPACE = 'http://www.stormware.cz/schema/version_2/filter.xsd';
-    /**
-     * @const XML Namespace for list stock
-     */
-    const LIST_NAMESPACE = 'http://www.stormware.cz/schema/version_2/list.xsd';
-    /**
-     * @const XML Namespace for list stock
-     */
-    const LIST_STOCK_NAMESPACE = 'http://www.stormware.cz/schema/version_2/list_stock.xsd';
-    /**
-     * @const XML Namespace for type
-     */
-    const TYPE_NAMESPACE = 'http://www.stormware.cz/schema/version_2/type.xsd';
-
     /**
      * @const string Filtering new or changed records from specified day
      */
@@ -48,18 +30,6 @@ abstract class BaseGetDataRequest
      */
     private $filterRootElement = 'ftr:filter';
 
-    /**
-     * @var string $requestId Request ID, it is in the response for identification
-     */
-    protected $requestId;
-    /**
-     * @var string $in Identification number of company, must be in every request
-     */
-    protected $in;
-    /**
-     * @var \SimpleXMLElement $requestXml Request XML
-     */
-    protected $requestXml;
     /**
      * @var \SimpleXMLElement $filterParent Element, after which should be filter appended
      */
@@ -77,95 +47,9 @@ abstract class BaseGetDataRequest
      */
     public function __construct($requestId, $in)
     {
-        $this->requestId = $requestId;
-        $this->in = $in;
+        parent::__construct($requestId, $in);
 
         $this->constructXml();
-    }
-
-    /**
-     * Returns name of the class
-     * Used in note for requests
-     *
-     * @return string
-     */
-    protected function getNote()
-    {
-        return get_class($this);
-    }
-
-    /**
-     * Returns identification number
-     *
-     * @return string
-     */
-    public function getIn()
-    {
-        return $this->in;
-    }
-
-    /**
-     * Returns ID of request
-     *
-     * @return string
-     */
-    public function getRequestId()
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * Creates header for every XML request
-     *
-     * @return \SimpleXMLElement
-     */
-    protected function getXmlHeader()
-    {
-        $xmlHeader = new \SimpleXMLElement('<?xml version="1.0" encoding="Windows-1250"?>'
-            . '<dat:dataPack ico="' . $this->in . '" application="HTTP klient" version="2.0" note="' .$this->getNote() . '" '
-                . 'xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" '
-                . 'xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd" '
-                . 'xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" '
-                . 'xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd" '
-                . 'xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd" '
-                . 'xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" id="' . $this->requestId . '">'
-            . '</dat:dataPack>');
-
-        return $xmlHeader;
-    }
-
-    /**
-     * Adds DataPackItem node
-     *
-     * @param \SimpleXMLElement $parent
-     *
-     * @return \SimpleXMLElement
-     */
-    protected function addDataPackItem(\SimpleXMLElement $parent)
-    {
-        $dataPackItem = $parent->addChild('dat:dataPackItem');
-        $dataPackItem->addAttribute('id', $this->requestId);
-        $dataPackItem->addAttribute('version', '2.0');
-
-        return $dataPackItem;
-    }
-
-    /**
-     * Formats the date for request
-     *
-     * @param \DateTime $date
-     * @return string
-     */
-    protected function formatDate(\DateTime $date, $includeTime = TRUE)
-    {
-        $formattedDate = $date->format('Y-m-d');
-
-        if ($includeTime)
-        {
-            $formattedDate = $formattedDate . 'T' . $date->format('H:i:s');
-        }
-
-        return $formattedDate;
     }
 
     /**
@@ -186,7 +70,7 @@ abstract class BaseGetDataRequest
 
         if ($filterType === self::FILTER_LAST_CHANGES && $value instanceof \DateTime)
         {
-            $value = $this->formatDate($value);
+            $value = PohodaHelper::formatDate($value);
         }
 
         if (strpos($filterType, $this->filterPrefix) === FALSE)
@@ -197,20 +81,5 @@ abstract class BaseGetDataRequest
         $lastFilter = $this->filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
 
         return $lastFilter;
-    }
-
-    /**
-     * Constructs base XML
-     */
-    protected abstract function constructXml();
-
-    /**
-     * Returns string with XML specified for request purposes
-     *
-     * @return \SimpleXMLElement
-     */
-    public function getRequestXml()
-    {
-        return $this->requestXml->asXML();
     }
 }

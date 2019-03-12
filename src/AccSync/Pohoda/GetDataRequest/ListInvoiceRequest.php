@@ -2,6 +2,8 @@
 
 namespace AccSync\Pohoda\GetDataRequest;
 
+use AccSync\Pohoda\Data\PohodaHelper;
+
 /**
  * Class ListStockRequest
  * Invoices / Faktury
@@ -90,11 +92,11 @@ class ListInvoiceRequest extends BaseGetDataRequest
         }
         if (!empty($from))
         {
-            $this->addFilter(self::FILTER_BY_DATE_FROM, $this->formatDate($from, FALSE));
+            $this->addFilter(self::FILTER_BY_DATE_FROM, PohodaHelper::formatDate($from, FALSE));
         }
         if (!empty($to))
         {
-            $this->addFilter(self::FILTER_BY_DATE_TO, $this->formatDate($to, FALSE));
+            $this->addFilter(self::FILTER_BY_DATE_TO, PohodaHelper::formatDate($to, FALSE));
         }
     }
 
