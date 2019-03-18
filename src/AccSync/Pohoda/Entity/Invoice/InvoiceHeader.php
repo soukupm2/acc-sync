@@ -108,9 +108,21 @@ class InvoiceHeader
      */
     private $symConst;
     /**
+     * @var int $contractId
+     */
+    private $contractId;
+    /**
+     * @var string $contractIds
+     */
+    private $contractIds;
+    /**
      * @var float $liquidationAmountHome
      */
     private $liquidationAmountHome;
+    /**
+     * @var float $liquidationAmountForeign
+     */
+    private $liquidationAmountForeign;
     /**
      * @var bool $markRecord
      */
@@ -131,110 +143,6 @@ class InvoiceHeader
      * @var string $activityIds
      */
     private $activityIds;
-
-    /**
-     * InvoiceHeader constructor.
-     *
-     * @param int       $id
-     * @param string    $invoiceType
-     * @param int       $numberRequested
-     * @param int       $symVar
-     * @param \DateTime $date
-     * @param \DateTime $dateTax
-     * @param \DateTime $dateAccounting
-     * @param \DateTime $dateDue
-     * @param int       $accountingId
-     * @param string    $accountingIds
-     * @param int       $classificationVatId
-     * @param string    $classificationVatIds
-     * @param string    $classificationVatType
-     * @param string    $text
-     * @param int       $partnerIdentityId
-     * @param Address   $partnerIdentityAddress
-     * @param Address   $myIdentityAddress
-     * @param int       $paymentTypeId
-     * @param string    $paymentTypeIds
-     * @param string    $paymentType
-     * @param int       $accountId
-     * @param string    $accountBankCode
-     * @param string    $accountIds
-     * @param string    $accountNo
-     * @param string    $symConst
-     * @param float     $liquidationAmountHome
-     * @param bool      $markRecord
-     * @param string    $note
-     * @param string    $intNote
-     * @param string    $centreIds
-     * @param string    $activityIds
-     */
-    public function __construct(
-        $id= 0,
-        $invoiceType = '',
-        $numberRequested = 0,
-        $symVar = 0,
-        \DateTime $date = NULL,
-        \DateTime $dateTax = NULL,
-        \DateTime $dateAccounting = NULL,
-        \DateTime $dateDue = NULL,
-        $accountingId = 0,
-        $accountingIds = '',
-        $classificationVatId = 0,
-        $classificationVatIds = '',
-        $classificationVatType = '',
-        $text = '',
-        $partnerIdentityId = 0,
-        Address $partnerIdentityAddress = NULL,
-        Address $myIdentityAddress = NULL,
-        $paymentTypeId = 0,
-        $paymentTypeIds = '',
-        $paymentType = '',
-        $accountId = 0,
-        $accountIds = '',
-        $accountBankCode = '',
-        $accountNo = '',
-        $symConst = '',
-        $liquidationAmountHome = 0.0,
-        $markRecord = FALSE,
-        $note = '',
-        $intNote = '',
-        $centreIds = '',
-        $activityIds = ''
-    )
-    {
-        $this->id = $id;
-        $this->invoiceType = $invoiceType;
-        $this->numberRequested = $numberRequested;
-        $this->symVar = $symVar;
-
-        $this->setDate($date);
-        $this->setDateAccounting($dateAccounting);
-        $this->setDateDue($dateDue);
-        $this->setDateTax($dateTax);
-
-        $this->accountingId = $accountingId;
-        $this->accountingIds = $accountingIds;
-        $this->classificationVatId = $classificationVatId;
-        $this->classificationVatIds = $classificationVatIds;
-        $this->classificationVatType = $classificationVatType;
-        $this->text = $text;
-        $this->partnerIdentityId = $partnerIdentityId;
-        $this->partnerIdentityAddress = $partnerIdentityAddress;
-        $this->myIdentityAddress = $myIdentityAddress;
-        $this->paymentTypeId = $paymentTypeId;
-        $this->paymentTypeIds = $paymentTypeIds;
-        $this->paymentType = $paymentType;
-        $this->accountId = $accountId;
-        $this->accountIds = $accountIds;
-        $this->accountNo = $accountNo;
-        $this->symConst = $symConst;
-        $this->liquidationAmountHome = $liquidationAmountHome;
-        $this->markRecord = $markRecord;
-        $this->note = $note;
-        $this->intNote = $intNote;
-        $this->centreIds = $centreIds;
-        $this->activityIds = $activityIds;
-        $this->accountBankCode = $accountBankCode;
-    }
 
     /**
      * @return int
@@ -301,11 +209,12 @@ class InvoiceHeader
     }
 
     /**
+     * @param bool $asString
      * @return string
      */
-    public function getDate()
+    public function getDate($asString = TRUE)
     {
-        return $this->date;
+        return $asString ? $this->date : PohodaHelper::getDate($this->date);
     }
 
     /**
@@ -317,11 +226,12 @@ class InvoiceHeader
     }
 
     /**
+     * @param bool $asString
      * @return string
      */
-    public function getDateTax()
+    public function getDateTax($asString = TRUE)
     {
-        return $this->dateTax;
+        return $asString ? $this->dateTax : PohodaHelper::getDate($this->dateTax);
     }
 
     /**
@@ -333,11 +243,12 @@ class InvoiceHeader
     }
 
     /**
+     * @param bool $asString
      * @return string
      */
-    public function getDateAccounting()
+    public function getDateAccounting($asString = TRUE)
     {
-        return $this->dateAccounting;
+        return $asString ? $this->dateAccounting : PohodaHelper::getDate($this->dateAccounting);
     }
 
     /**
@@ -349,11 +260,12 @@ class InvoiceHeader
     }
 
     /**
+     * @param bool $asString
      * @return string
      */
-    public function getDateDue()
+    public function getDateDue($asString = TRUE)
     {
-        return $this->dateDue;
+        return $asString ? $this->dateDue : PohodaHelper::getDate($this->dateDue);
     }
 
     /**
@@ -621,6 +533,38 @@ class InvoiceHeader
     }
 
     /**
+     * @return int
+     */
+    public function getContractId()
+    {
+        return $this->contractId;
+    }
+
+    /**
+     * @param int $contractId
+     */
+    public function setContractId($contractId)
+    {
+        $this->contractId = $contractId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContractIds()
+    {
+        return $this->contractIds;
+    }
+
+    /**
+     * @param string $contractIds
+     */
+    public function setContractIds($contractIds)
+    {
+        $this->contractIds = $contractIds;
+    }
+
+    /**
      * @return float
      */
     public function getLiquidationAmountHome()
@@ -730,5 +674,21 @@ class InvoiceHeader
     public function setAccountBankCode($accountBankCode)
     {
         $this->accountBankCode = $accountBankCode;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLiquidationAmountForeign()
+    {
+        return $this->liquidationAmountForeign;
+    }
+
+    /**
+     * @param float $liquidationAmountForeign
+     */
+    public function setLiquidationAmountForeign($liquidationAmountForeign)
+    {
+        $this->liquidationAmountForeign = $liquidationAmountForeign;
     }
 }

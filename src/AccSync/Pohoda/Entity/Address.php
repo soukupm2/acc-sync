@@ -13,13 +13,9 @@ class Address
      */
     private $division;
     /**
-     * @var string $firstName
+     * @var string $name
      */
-    private $firstName;
-    /**
-     * @var string $lastName
-     */
-    private $lastName;
+    private $name;
     /**
      * @var string $city
      */
@@ -90,78 +86,6 @@ class Address
     private $shipToPhone;
 
     /**
-     * Address constructor.
-     *
-     * @param string $company
-     * @param string $division
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $city
-     * @param string $street
-     * @param string $streetNumber
-     * @param string $zip
-     * @param string $ico
-     * @param string $dic
-     * @param string $phone
-     * @param string $mobilPhone
-     * @param string $fax
-     * @param string $email
-     * @param string $www
-     * @param string $shipToCompany
-     * @param string $shipToName
-     * @param string $shipToCity
-     * @param string $shipToZip
-     * @param string $shipToStreet
-     * @param string $shipToPhone
-     */
-    public function __construct(
-        $company = '',
-        $division = '',
-        $firstName = '',
-        $lastName = '',
-        $city = '',
-        $street = '',
-        $streetNumber = '',
-        $zip = '',
-        $ico = '',
-        $dic = '',
-        $phone = '',
-        $mobilPhone = '',
-        $fax = '',
-        $email = '',
-        $www = '',
-        $shipToCompany = '',
-        $shipToName = '',
-        $shipToCity = '',
-        $shipToZip = '',
-        $shipToStreet = '',
-        $shipToPhone = ''
-    )
-    {
-        $this->company = $company;
-        $this->division = $division;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->city = $city;
-        $this->street = $street;
-        $this->streetNumber = $streetNumber;
-        $this->zip = $zip;
-        $this->ico = $ico;
-        $this->dic = $dic;
-        $this->phone = $phone;
-        $this->mobilPhone = $mobilPhone;
-        $this->fax = $fax;
-        $this->email = $email;
-        $this->www = $www;
-        $this->shipToCompany = $shipToCompany;
-        $this->shipToName = $shipToName;
-        $this->shipToCity = $shipToCity;
-        $this->shipToZip = $shipToZip;
-        $this->shipToStreet = $shipToStreet;
-        $this->shipToPhone = $shipToPhone;
-    }
-
-    /**
      * @return string
      */
     public function getCompany()
@@ -191,38 +115,6 @@ class Address
     public function setDivision($division)
     {
         $this->division = $division;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @param string $firstName
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $lastName
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
     }
 
     /**
@@ -495,5 +387,21 @@ class Address
     public function setShipToPhone($shipToPhone)
     {
         $this->shipToPhone = $shipToPhone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 }

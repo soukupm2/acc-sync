@@ -28,4 +28,30 @@ class PohodaHelper
 
         return $formattedDate;
     }
+
+    /**
+     * Get the date from string
+     *
+     * @param string $date
+     *
+     * @return \DateTime|null
+     */
+    public static function getDate($date)
+    {
+        if (empty($date))
+        {
+            return NULL;
+        }
+
+        try
+        {
+            $newDate = new \DateTime($date);
+        }
+        catch (\Exception $e)
+        {
+            $newDate = NULL;
+        }
+
+        return $newDate;
+    }
 }

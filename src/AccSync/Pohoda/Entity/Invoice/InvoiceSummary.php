@@ -61,9 +61,9 @@ class InvoiceSummary
      */
     private $priceRound;
     /**
-     * @var bool $isHomeCurrency
+     * @var int $foreignCurrencyId
      */
-    private $isHomeCurrency;
+    private $foreignCurrencyId;
     /**
      * @var string $foreignCurrencyIds
      */
@@ -77,67 +77,9 @@ class InvoiceSummary
      */
     private $foreignCurrencyAmount;
     /**
-     * InvoiceSummary constructor.
-     *
-     * @param string $roundingDocument
-     * @param string $roundingVat
-     * @param bool   $calculateVat
-     * @param float  $priceNone
-     * @param float  $priceLow
-     * @param float  $priceLowVAT
-     * @param float  $priceLowSum
-     * @param float  $priceHigh
-     * @param float  $priceHighVAT
-     * @param float  $priceHighSum
-     * @param float  $price3
-     * @param float  $price3Sum
-     * @param float  $price3VAT
-     * @param float  $priceRound
-     * @param bool   $isHomeCurrency
-     * @param string $foreignCurrencyIds
-     * @param float  $foreignCurrencyAmount
-     * @param float  $foreignCurrencyRate
+     * @var float $foreignCurrencyPriceSum
      */
-    public function __construct(
-        $roundingDocument = 'math2one',
-        $roundingVat = 'none',
-        $calculateVat = FALSE,
-        $priceNone = 0.0,
-        $priceLow = 0.0,
-        $priceLowVAT = 0.0,
-        $priceLowSum = 0.0,
-        $priceHigh = 0.0,
-        $priceHighVAT = 0.0,
-        $priceHighSum = 0.0,
-        $price3 = 0.0,
-        $price3Sum = 0.0,
-        $price3VAT = 0.0,
-        $priceRound = 0.0,
-        $isHomeCurrency = TRUE,
-        $foreignCurrencyIds = '',
-        $foreignCurrencyAmount = 0.0,
-        $foreignCurrencyRate = 0.0
-    )
-    {
-        $this->roundingDocument = $roundingDocument;
-        $this->roundingVat = $roundingVat;
-        $this->calculateVat = $calculateVat;
-        $this->priceNone = $priceNone;
-        $this->priceLow = $priceLow;
-        $this->priceLowVAT = $priceLowVAT;
-        $this->priceLowSum = $priceLowSum;
-        $this->priceHigh = $priceHigh;
-        $this->priceHighVAT = $priceHighVAT;
-        $this->priceHighSum = $priceHighSum;
-        $this->price3 = $price3;
-        $this->price3Sum = $price3Sum;
-        $this->price3VAT = $price3VAT;
-        $this->priceRound = $priceRound;
-        $this->isHomeCurrency = $isHomeCurrency;
-        $this->foreignCurrencyIds = $foreignCurrencyIds;
-        $this->foreignCurrencyAmount = $foreignCurrencyAmount;
-        $this->foreignCurrencyRate = $foreignCurrencyRate;
-    }
+    private $foreignCurrencyPriceSum;
 
     /**
      * @return string
@@ -364,22 +306,6 @@ class InvoiceSummary
     }
 
     /**
-     * @return bool
-     */
-    public function isHomeCurrency()
-    {
-        return $this->isHomeCurrency;
-    }
-
-    /**
-     * @param bool $isHomeCurrency
-     */
-    public function setIsHomeCurrency($isHomeCurrency)
-    {
-        $this->isHomeCurrency = $isHomeCurrency;
-    }
-
-    /**
      * @return string
      */
     public function getForeignCurrencyIds()
@@ -425,5 +351,37 @@ class InvoiceSummary
     public function setForeignCurrencyAmount($foreignCurrencyAmount)
     {
         $this->foreignCurrencyAmount = $foreignCurrencyAmount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getForeignCurrencyId()
+    {
+        return $this->foreignCurrencyId;
+    }
+
+    /**
+     * @param int $foreignCurrencyId
+     */
+    public function setForeignCurrencyId($foreignCurrencyId)
+    {
+        $this->foreignCurrencyId = $foreignCurrencyId;
+    }
+
+    /**
+     * @return float
+     */
+    public function getForeignCurrencyPriceSum()
+    {
+        return $this->foreignCurrencyPriceSum;
+    }
+
+    /**
+     * @param float $foreignCurrencyPriceSum
+     */
+    public function setForeignCurrencyPriceSum($foreignCurrencyPriceSum)
+    {
+        $this->foreignCurrencyPriceSum = $foreignCurrencyPriceSum;
     }
 }

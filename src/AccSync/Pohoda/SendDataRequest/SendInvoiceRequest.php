@@ -80,8 +80,20 @@ class SendInvoiceRequest extends BaseRequest
         /** @var InvoiceItem $item */
         foreach ($detail->getInvoiceItemsCollection() as $item)
         {
-            $xmlItem = $invDetail->addChild('inv:invoiceItem', NULL, self::INVOICE_NAMESPACE);
+            if (!$item->isAdvancePayment())
+            {
+                $xmlItem = $invDetail->addChild('inv:invoiceItem', NULL, self::INVOICE_NAMESPACE);
+            }
+            else
+            {
+                $xmlItem = $invDetail->addChild('inv:invoiceAdvancePaymentItem', NULL, self::INVOICE_NAMESPACE);
+            }
 
+            if (!empty($item->getSourceDocumentNumber()))
+            {
+                $sourceNumber = $xmlItem->addChild('inv:sourceDocument', NULL, self::INVOICE_NAMESPACE);
+                $sourceNumber->addChild('type:number', $item->getSourceDocumentNumber(), self::TYPE_NAMESPACE);
+            }
             if (!empty($item->getId()))
             {
                 $xmlItem->addChild('inv:id', $item->getId(), self::INVOICE_NAMESPACE);
@@ -187,72 +199,80 @@ class SendInvoiceRequest extends BaseRequest
             $invSummary->addChild('inv:roundingDocument', $summary->getRoundingDocument(), self::INVOICE_NAMESPACE);
         }
 
-        if ($summary->isHomeCurrency())
-        {
-            $currency = $invSummary->addChild('inv:homeCurrency', NULL, self::INVOICE_NAMESPACE);
-            if (!empty($summary->getPriceNone()))
-            {
-                $currency->addChild('typ:priceNone', $summary->getPriceNone(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPriceLow()))
-            {
-                $currency->addChild('typ:priceLow', $summary->getPriceLow(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPriceLowVAT()))
-            {
-                $currency->addChild('typ:priceLowVAT', $summary->getPriceLowVAT(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPriceLowSum()))
-            {
-                $currency->addChild('typ:priceLowSum', $summary->getPriceLowVAT(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPriceHigh()))
-            {
-                $currency->addChild('typ:priceHigh', $summary->getPriceHigh(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPriceHighVAT()))
-            {
-                $currency->addChild('typ:priceHighVAT', $summary->getPriceHighVAT(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPriceHighSum()))
-            {
-                $currency->addChild('typ:priceHighSum', $summary->getPriceHighSum(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPrice3()))
-            {
-                $currency->addChild('typ:price3', $summary->getPrice3(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPrice3VAT()))
-            {
-                $currency->addChild('typ:price3VAT', $summary->getPrice3VAT(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPrice3Sum()))
-            {
-                $currency->addChild('typ:price3Sum', $summary->getPrice3Sum(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getPriceRound()))
-            {
-                $round = $currency->addChild('typ:round', NULL, self::TYPE_NAMESPACE);
-                $round->addChild('typ:round', $summary->getPriceRound(), self::TYPE_NAMESPACE);
-            }
-        }
-        else
-        {
-            $currency = $invSummary->addChild('inv:foreignCurrency', NULL, self::INVOICE_NAMESPACE);
+        $homeCurrency = $invSummary->addChild('inv:homeCurrency', NULL, self::INVOICE_NAMESPACE);
 
+        if (!empty($summary->getPriceNone()))
+        {
+            $homeCurrency->addChild('typ:priceNone', $summary->getPriceNone(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPriceLow()))
+        {
+            $homeCurrency->addChild('typ:priceLow', $summary->getPriceLow(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPriceLowVAT()))
+        {
+            $homeCurrency->addChild('typ:priceLowVAT', $summary->getPriceLowVAT(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPriceLowSum()))
+        {
+            $homeCurrency->addChild('typ:priceLowSum', $summary->getPriceLowVAT(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPriceHigh()))
+        {
+            $homeCurrency->addChild('typ:priceHigh', $summary->getPriceHigh(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPriceHighVAT()))
+        {
+            $homeCurrency->addChild('typ:priceHighVAT', $summary->getPriceHighVAT(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPriceHighSum()))
+        {
+            $homeCurrency->addChild('typ:priceHighSum', $summary->getPriceHighSum(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPrice3()))
+        {
+            $homeCurrency->addChild('typ:price3', $summary->getPrice3(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPrice3VAT()))
+        {
+            $homeCurrency->addChild('typ:price3VAT', $summary->getPrice3VAT(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPrice3Sum()))
+        {
+            $homeCurrency->addChild('typ:price3Sum', $summary->getPrice3Sum(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getPriceRound()))
+        {
+            $round = $homeCurrency->addChild('typ:round', NULL, self::TYPE_NAMESPACE);
+            $round->addChild('typ:round', $summary->getPriceRound(), self::TYPE_NAMESPACE);
+        }
+
+        $foreignCurrency = $invSummary->addChild('inv:foreignCurrency', NULL, self::INVOICE_NAMESPACE);
+
+        if (!empty($summary->getForeignCurrencyIds()) || !empty($summary->getForeignCurrencyId()))
+        {
+            $currency = $foreignCurrency->addChild('typ:currency', NULL, self::TYPE_NAMESPACE);
+
+            if (!empty($summary->getForeignCurrencyId()))
+            {
+                $currency->addChild('typ:id', $summary->getForeignCurrencyId(), self::TYPE_NAMESPACE);
+            }
             if (!empty($summary->getForeignCurrencyIds()))
             {
-                $foreignCurrency = $currency->addChild('typ:currency', NULL, self::TYPE_NAMESPACE);
-                $foreignCurrency->addChild('typ:ids', $summary->getForeignCurrencyIds(), self::TYPE_NAMESPACE);
+                $currency->addChild('typ:ids', $summary->getForeignCurrencyIds(), self::TYPE_NAMESPACE);
             }
-            if (!empty($summary->getForeignCurrencyAmount()))
-            {
-                $currency->addChild('typ:amount', $summary->getForeignCurrencyAmount(), self::TYPE_NAMESPACE);
-            }
-            if (!empty($summary->getForeignCurrencyRate()))
-            {
-                $currency->addChild('typ:rate', $summary->getForeignCurrencyRate(), self::TYPE_NAMESPACE);
-            }
+        }
+        if (!empty($summary->getForeignCurrencyAmount()))
+        {
+            $foreignCurrency->addChild('typ:amount', $summary->getForeignCurrencyAmount(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getForeignCurrencyRate()))
+        {
+            $foreignCurrency->addChild('typ:rate', $summary->getForeignCurrencyRate(), self::TYPE_NAMESPACE);
+        }
+        if (!empty($summary->getForeignCurrencyPriceSum()))
+        {
+            $foreignCurrency->addChild('typ:priceSum', $summary->getForeignCurrencyPriceSum(), self::TYPE_NAMESPACE);
         }
     }
 
@@ -360,9 +380,9 @@ class SendInvoiceRequest extends BaseRequest
             {
                 $addressXml->addChild('typ:division', $address->getDivision(), self::TYPE_NAMESPACE);
             }
-            if (!empty($address->getFirstName()) || !!empty($address->getLastName()))
+            if (!empty($address->getName()))
             {
-                $addressXml->addChild('typ:name', trim($address->getFirstName() . ' ' . $address->getLastName()), self::TYPE_NAMESPACE);
+                $addressXml->addChild('typ:name', $address->getName(), self::TYPE_NAMESPACE);
             }
             if (!empty($address->getCity()))
             {

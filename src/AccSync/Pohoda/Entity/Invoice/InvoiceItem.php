@@ -101,6 +101,10 @@ class InvoiceItem
      */
     private $stockItemPLU;
     /**
+     * @var string $serialNumber
+     */
+    private $serialNumber;
+    /**
      * @var bool $PDP
      */
     private $PDP;
@@ -108,93 +112,10 @@ class InvoiceItem
      * @var bool $isAdvancePayment
      */
     private $isAdvancePayment;
-
     /**
-     * InvoiceItem constructor.
-     *
-     * @param int    $id
-     * @param string $text
-     * @param float  $quantity
-     * @param string $unit
-     * @param float  $coefficient
-     * @param bool   $payVAT
-     * @param string $rateVAT
-     * @param float  $discountPercentage
-     * @param float  $homeCurrencyUnitPrice
-     * @param float  $homeCurrencyPrice
-     * @param float  $homeCurrencyPriceVAT
-     * @param float  $homeCurrencyPriceSum
-     * @param float  $foreignCurrencyUnitPrice
-     * @param float  $foreignCurrencyPrice
-     * @param float  $foreignCurrencyPriceVAT
-     * @param float  $foreignCurrencyPriceSum
-     * @param string $code
-     * @param int    $guarantee
-     * @param string $guaranteeType
-     * @param int    $storeId
-     * @param string $storeIds
-     * @param int    $stockItemId
-     * @param string $stockItemIds
-     * @param string $stockItemPLU
-     * @param bool   $PDP
-     * @param bool   $isAdvancePayment
+     * @var string $sourceDocumentNumber
      */
-    public function __construct(
-        $id = NULL,
-        $text = '',
-        $quantity = 0.0,
-        $unit = '',
-        $coefficient = 0.0,
-        $payVAT = FALSE,
-        $rateVAT = '',
-        $discountPercentage = 0.0,
-        $homeCurrencyUnitPrice = 0.0,
-        $homeCurrencyPrice = 0.0,
-        $homeCurrencyPriceVAT = 0.0,
-        $homeCurrencyPriceSum = 0.0,
-        $foreignCurrencyUnitPrice = 0.0,
-        $foreignCurrencyPrice = 0.0,
-        $foreignCurrencyPriceVAT = 0.0,
-        $foreignCurrencyPriceSum = 0.0,
-        $code = '',
-        $guarantee = 0,
-        $guaranteeType = '',
-        $storeId = 0,
-        $storeIds = '',
-        $stockItemId = 0,
-        $stockItemIds = '',
-        $stockItemPLU = '',
-        $PDP = FALSE,
-        $isAdvancePayment = FALSE
-    )
-    {
-        $this->id = $id;
-        $this->text = $text;
-        $this->quantity = $quantity;
-        $this->unit = $unit;
-        $this->coefficient = $coefficient;
-        $this->payVAT = $payVAT;
-        $this->rateVAT = $rateVAT;
-        $this->discountPercentage = $discountPercentage;
-        $this->homeCurrencyUnitPrice = $homeCurrencyUnitPrice;
-        $this->homeCurrencyPrice = $homeCurrencyPrice;
-        $this->homeCurrencyPriceVAT = $homeCurrencyPriceVAT;
-        $this->homeCurrencyPriceSum = $homeCurrencyPriceSum;
-        $this->foreignCurrencyUnitPrice = $foreignCurrencyUnitPrice;
-        $this->foreignCurrencyPrice = $foreignCurrencyPrice;
-        $this->foreignCurrencyPriceVAT = $foreignCurrencyPriceVAT;
-        $this->foreignCurrencyPriceSum = $foreignCurrencyPriceSum;
-        $this->code = $code;
-        $this->guaranteeType = $guaranteeType;
-        $this->storeId = $storeId;
-        $this->storeIds = $storeIds;
-        $this->stockItemId = $stockItemId;
-        $this->stockItemIds = $stockItemIds;
-        $this->stockItemPLU = $stockItemPLU;
-        $this->PDP = $PDP;
-        $this->isAdvancePayment = $isAdvancePayment;
-        $this->guarantee = $guarantee;
-    }
+    private $sourceDocumentNumber;
 
     /**
      * @return int
@@ -610,5 +531,37 @@ class InvoiceItem
     public function setGuarantee($guarantee)
     {
         $this->guarantee = $guarantee;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourceDocumentNumber()
+    {
+        return $this->sourceDocumentNumber;
+    }
+
+    /**
+     * @param string $sourceDocumentNumber
+     */
+    public function setSourceDocumentNumber($sourceDocumentNumber)
+    {
+        $this->sourceDocumentNumber = $sourceDocumentNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSerialNumber()
+    {
+        return $this->serialNumber;
+    }
+
+    /**
+     * @param string $serialNumber
+     */
+    public function setSerialNumber($serialNumber)
+    {
+        $this->serialNumber = $serialNumber;
     }
 }

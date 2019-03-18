@@ -12,16 +12,6 @@ class InvoiceDetail
     private $invoiceItemsCollection;
 
     /**
-     * InvoiceDetail constructor.
-     *
-     * @param InvoiceItemsCollection $invoiceItemsCollection
-     */
-    public function __construct(InvoiceItemsCollection $invoiceItemsCollection)
-    {
-        $this->invoiceItemsCollection = $invoiceItemsCollection;
-    }
-
-    /**
      * @return InvoiceItemsCollection
      */
     public function getInvoiceItemsCollection()
