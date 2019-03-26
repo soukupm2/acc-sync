@@ -2,39 +2,20 @@
 
 namespace AccSync\Pohoda;
 
+use AccSync\Connector;
 use AccSync\Pohoda\Data\XMLParser;
 use AccSync\Pohoda\Enum\EResponseErrorCodes;
 use AccSync\Pohoda\Exception\PohodaConnectionException;
 
 /**
  * Class PohodaConnector
- * 
+ *
  * @package AccSync\Pohoda
  * @author miroslav.soukup2@gmail.com
  */
-class PohodaConnector
+class PohodaConnector extends Connector
 {
     const USER_AGENT = 'test';
-    /**
-     * @var string URI - expected format http://localhost
-     */
-    private $baseUri;
-    /**
-     * @var string Number of port for communication
-     */
-    private $port;
-    /**
-     * @var string User login name
-     */
-    private $username;
-    /**
-     * @var string User login password
-     */
-    private $password;
-    /**
-     * @var resource $curl
-     */
-    private $curl;
     /**
      * @var \DOMDocument $domResponse
      */
@@ -44,16 +25,18 @@ class PohodaConnector
      * PohodaConnector constructor.
      *
      * @param string $baseUri URI - expected format http://localhost
-     * @param string $port Number of port for communication
+     * @param string|null $port Port number for communication
      * @param string $username User login name
      * @param string $password User login password
      */
-    public function __construct($baseUri, $port, $username, $password)
+    public function __construct($baseUri, $username, $password, $port = NULL)
     {
         $this->baseUri = $baseUri;
-        $this->port = $port;
         $this->username = $username;
         $this->password = $password;
+        $this->port = $port;
+
+        parent::__construct();
     }
 
     /**
@@ -63,17 +46,9 @@ class PohodaConnector
      */
     private function createUrl()
     {
-        return $this->baseUri . ':' . $this->port . '/xml';
-    }
+        $port = !empty($this->port) ? ':' . $this->port : NULL;
 
-    /**
-     * Creates authorization token for XML
-     *
-     * @return string
-     */
-    private function createAuthToken()
-    {
-        return 'Basic ' . base64_encode($this->username.':'.$this->password);
+        return $this->baseUri . $port . '/xml';
     }
 
     /**
@@ -85,8 +60,9 @@ class PohodaConnector
      */
     private function getCurlResponse(BaseRequest $request)
     {
-        $this->curl = curl_init();
         $xml = $request->getRequestXml()->asXML();
+
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $xml);
 
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             'STW-Authorization: ' . $this->createAuthToken(),
@@ -94,19 +70,21 @@ class PohodaConnector
             'Content-Length: '.strlen($xml)
         ]);
 
+        return curl_exec($this->curl);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function curlInit()
+    {
+        parent::curlInit();
+
         curl_setopt($this->curl, CURLOPT_USERAGENT, self::USER_AGENT);
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($this->curl, CURLOPT_TIMEOUT, 300);
         curl_setopt($this->curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($this->curl, CURLINFO_HEADER_OUT, TRUE);
         curl_setopt($this->curl, CURLOPT_URL, $this->createUrl());
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($this->curl, CURLOPT_POST, TRUE);
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $xml);
-
-        return curl_exec($this->curl);
     }
 
     /**
