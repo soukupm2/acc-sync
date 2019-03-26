@@ -54,7 +54,7 @@ class Condition
      *
      * @return string
      */
-    public function getFullExpression()
+    public function getFullCondition()
     {
         $identifier = !empty($this->identifier) ? $this->identifier : NULL;
         $operator = !empty($this->operator) ? $this->operator : NULL;

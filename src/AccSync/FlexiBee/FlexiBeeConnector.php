@@ -24,7 +24,7 @@ class FlexiBeeConnector extends Connector
      * @param string $baseUri URI - expected format http://localhost
      * @param string $username User login name
      * @param string $password User login password
-     * @param $companyId
+     * @param string $companyId
      * @param string $port Number of port for communication
      */
     public function __construct($baseUri, $username, $password, $companyId, $port = NULL)

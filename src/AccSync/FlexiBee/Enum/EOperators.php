@@ -4,6 +4,7 @@ namespace AccSync\FlexiBee\Enum;
 
 /**
  * Class EOperators
+ * Operators which can be used to join conditions or in Condition class
  *
  * @package AccSync\FlexiBee\Enum
  * @author miroslav.soukup2@gmail.com

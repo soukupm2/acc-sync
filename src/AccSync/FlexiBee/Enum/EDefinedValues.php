@@ -4,6 +4,7 @@ namespace AccSync\FlexiBee\Enum;
 
 /**
  * Class EDefinedValues
+ * Values defined in FlexiBee
  *
  * @package AccSync\FlexiBee\Enum
  * @author miroslav.soukup2@gmail.com
