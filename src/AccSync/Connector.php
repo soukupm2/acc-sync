@@ -34,6 +34,10 @@ abstract class Connector
      * @var resource $curl
      */
     protected $curl;
+    /**
+     * @var string $companyId
+     */
+    protected $companyId;
 
     /**
      * Connector constructor.

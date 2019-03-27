@@ -11,7 +11,7 @@ use AccSync\Pohoda\Exception\PohodaConnectionException;
  * Class PohodaConnector
  *
  * @package AccSync\Pohoda
- * @author miroslav.soukup2@gmail.com
+ * @author  miroslav.soukup2@gmail.com
  */
 class PohodaConnector extends Connector
 {
@@ -24,16 +24,18 @@ class PohodaConnector extends Connector
     /**
      * PohodaConnector constructor.
      *
-     * @param string $baseUri URI - expected format http://localhost
-     * @param string|null $port Port number for communication
-     * @param string $username User login name
-     * @param string $password User login password
+     * @param string      $baseUri   URI - expected format http://localhost
+     * @param string      $username  User login name
+     * @param string      $password  User login password
+     * @param string      $companyId Company unique identifier
+     * @param string|null $port      Port number for communication
      */
-    public function __construct($baseUri, $username, $password, $port = NULL)
+    public function __construct($baseUri, $username, $password, $companyId, $port = NULL)
     {
         $this->baseUri = $baseUri;
         $this->username = $username;
         $this->password = $password;
+        $this->companyId = $companyId;
         $this->port = $port;
 
         parent::__construct();
@@ -67,7 +69,7 @@ class PohodaConnector extends Connector
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             'STW-Authorization: ' . $this->createAuthToken(),
             'Content-Type: text/xml',
-            'Content-Length: '.strlen($xml)
+            'Content-Length: ' . strlen($xml)
         ]);
 
         return curl_exec($this->curl);
@@ -131,7 +133,7 @@ class PohodaConnector extends Connector
         $this->getError();
 
         $dom = new \DOMDocument();
-        $dom->loadXML($response,LIBXML_PARSEHUGE);
+        $dom->loadXML($response, LIBXML_PARSEHUGE);
         $this->domResponse = $dom;
 
         $result = XMLParser::parseXML($dom->saveXML());

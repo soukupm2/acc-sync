@@ -25,12 +25,17 @@ class EOperators
     const ENDS = 'ends';
     const IN = 'in';
     const IN_SUBTREE = 'in subtree';
+    const IS = 'is';
+    const IS_NOT = 'is not';
     const IS_TRUE = 'is true';
     const IS_FALSE = 'is false';
     const IS_NULL = 'is null';
     const IS_NOT_NULL = 'is not null';
     const IS_EMPTY = 'is empty';
     const IS_NOT_EMPTY = 'is not empty';
+    const LOGICAL_AND = 'and';
+    const LOGICAL_OR = 'or';
+    const LOGICAL_NOT = 'not';
 
     public static $ignoreExpressionValue = [
         self::IS_TRUE,

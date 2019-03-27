@@ -14,11 +14,6 @@ use AccSync\FlexiBee\GetDataRequest\BaseGetDataRequest;
 class FlexiBeeConnector extends Connector
 {
     /**
-     * @var string $companyId
-     */
-    private $companyId;
-
-    /**
      * FlexiBeeConnector constructor.
      *
      * @param string $baseUri URI - expected format http://localhost
@@ -32,8 +27,8 @@ class FlexiBeeConnector extends Connector
         $this->baseUri = $baseUri;
         $this->username = $username;
         $this->password = $password;
-        $this->port = $port;
         $this->companyId = $companyId;
+        $this->port = $port;
 
         parent::__construct();
     }
@@ -87,7 +82,9 @@ class FlexiBeeConnector extends Connector
 
         curl_setopt($this->curl, CURLOPT_URL, self::replaceUrlSpaces($url));
 
-        return curl_exec($this->curl);
+        $result = curl_exec($this->curl);
+
+        return $result;
     }
 
     /**

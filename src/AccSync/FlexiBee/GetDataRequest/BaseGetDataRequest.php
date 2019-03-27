@@ -2,18 +2,16 @@
 
 namespace AccSync\FlexiBee\GetDataRequest;
 
+use AccSync\FlexiBee\BaseRequest;
+
 /**
  * Class BaseGetDataRequest
  *
  * @package AccSync\FlexiBee\GetDataRequest
  * @author miroslav.soukup2@gmail.com
  */
-abstract class BaseGetDataRequest
+abstract class BaseGetDataRequest extends BaseRequest
 {
-    /**
-     * @var string $register Name of the register
-     */
-    protected $register;
     /**
      * @var string $customUrl
      */
@@ -26,14 +24,6 @@ abstract class BaseGetDataRequest
      * @var string $urlFilter
      */
     protected $urlFilter;
-
-    /**
-     * @return string
-     */
-    public function getRegister()
-    {
-        return $this->register;
-    }
 
     /**
      * @return string
