@@ -11,41 +11,57 @@ use AccSync\Pohoda\PohodaConnector;
  * @package AccSync
  * @author  miroslav.soukup2@gmail.com
  */
-class ConnectionFactory
+abstract class ConnectionFactory
 {
-    const FLEXI_BEE_CONNECTOR = 'flexibee';
-    const POHODA_CONNECTOR = 'pohoda';
+    /**
+     * @var string $baseUri
+     */
+    protected $baseUri;
+    /**
+     * @var string $username
+     */
+    protected $username;
+    /**
+     * @var string $password
+     */
+    protected $password;
+    /**
+     * @var string $companyId
+     */
+    protected $companyId;
+    /**
+     * @var int|null $port
+     */
+    protected $port;
 
     /**
-     * Creates the connector to accounting system
+     * PohodaConnectionFactory constructor.
      *
-     * @param string      $connector Type of connector to be used
-     * @param string      $baseUri   Uri where the server is running
-     * @param string      $username  Name of the user to be connected
-     * @param string      $password  Users password
-     * @param string|null $companyId Identifier of the company
-     * @param int|null    $port      Number of the portr
-     *
-     * @return FlexiBeeConnector|PohodaConnector
+     * @param string   $baseUri
+     * @param string   $username
+     * @param string   $password
+     * @param string   $companyId
+     * @param int|null $port
      */
-    public static function create($connector, $baseUri, $username, $password, $companyId, $port = NULL)
+    public function __construct($baseUri, $username, $password, $companyId, $port = NULL)
     {
-        if ($connector === self::FLEXI_BEE_CONNECTOR)
+        if (empty($baseUri))
         {
-            if (empty($companyId))
-            {
-                throw new \InvalidArgumentException('Company ID cannot be empty for FlexiBee Connector');
-            }
+            throw new \InvalidArgumentException('BaseUri cannot be empty');
+        }
+        if (empty($username))
+        {
+            throw new \InvalidArgumentException('Username cannot be empty');
+        }
+        if (empty($companyId))
+        {
+            throw new \InvalidArgumentException('Company ID cannot be empty');
+        }
 
-            return new FlexiBeeConnector($baseUri, $username, $password, $companyId, $port);
-        }
-        elseif ($connector === self::POHODA_CONNECTOR)
-        {
-            return new PohodaConnector($baseUri, $username, $password, $companyId, $port);
-        }
-        else
-        {
-            throw new \InvalidArgumentException('Connector type is not valid');
-        }
+        $this->baseUri = $baseUri;
+        $this->username = $username;
+        $this->password = $password;
+        $this->companyId = $companyId;
+        $this->port = $port;
     }
 }

@@ -3,9 +3,17 @@
 namespace AccSync\Pohoda;
 
 use AccSync\Connector;
+use AccSync\Pohoda\Collection\Invoice\InvoicesCollection;
+use AccSync\Pohoda\Data\ErrorParser;
 use AccSync\Pohoda\Data\XMLParser;
 use AccSync\Pohoda\Enum\EResponseErrorCodes;
 use AccSync\Pohoda\Exception\PohodaConnectionException;
+use AccSync\Pohoda\Requests\BaseRequest;
+use AccSync\Pohoda\Requests\GetDataRequest\ListInvoiceRequest;
+use AccSync\Pohoda\Requests\GetDataRequest\ListOrderRequest;
+use AccSync\Pohoda\Requests\GetDataRequest\ListStockRequest;
+use AccSync\Pohoda\Requests\SendDataRequest\SendInvoiceRequest;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * Class PohodaConnector
@@ -15,11 +23,22 @@ use AccSync\Pohoda\Exception\PohodaConnectionException;
  */
 class PohodaConnector extends Connector
 {
-    const USER_AGENT = 'test';
+    /**
+     * @var BaseRequest $request
+     */
+    private $request;
     /**
      * @var \DOMDocument $domResponse
      */
     private $domResponse = NULL;
+    /**
+     * @var \stdClass $parsedResponse
+     */
+    private $parsedResponse = NULL;
+    /**
+     * @var int Default number of request
+     */
+    private $requestId = 1;
 
     /**
      * PohodaConnector constructor.
@@ -82,7 +101,7 @@ class PohodaConnector extends Connector
     {
         parent::curlInit();
 
-        curl_setopt($this->curl, CURLOPT_USERAGENT, self::USER_AGENT);
+        curl_setopt($this->curl, CURLOPT_USERAGENT, $this->companyId);
         curl_setopt($this->curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($this->curl, CURLINFO_HEADER_OUT, TRUE);
         curl_setopt($this->curl, CURLOPT_URL, $this->createUrl());
@@ -94,7 +113,7 @@ class PohodaConnector extends Connector
      *
      * @throws PohodaConnectionException|\BadMethodCallException
      */
-    private function getError()
+    private function verifySuccess()
     {
         if (empty($this->curl))
         {
@@ -121,22 +140,28 @@ class PohodaConnector extends Connector
      * Sends the request to Pohoda API
      * Returns \stdClass with the result data
      *
-     * @param BaseRequest $request
-     *
      * @return \stdClass
      * @throws PohodaConnectionException
      */
-    public function sendRequest(BaseRequest $request)
+    public function sendRequest()
     {
-        $response = $this->getCurlResponse($request);
+        if (empty($this->request))
+        {
+            throw new PohodaConnectionException('Request has not been set.');
+        }
 
-        $this->getError();
+        $response = $this->getCurlResponse($this->request);
+
+        $this->verifySuccess();
 
         $dom = new \DOMDocument();
         $dom->loadXML($response, LIBXML_PARSEHUGE);
+
         $this->domResponse = $dom;
 
         $result = XMLParser::parseXML($dom->saveXML());
+
+        $this->parsedResponse = $result;
 
         return $result;
     }
@@ -149,5 +174,89 @@ class PohodaConnector extends Connector
     public function getDOMResponse()
     {
         return $this->domResponse;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getParsedResponse()
+    {
+        return $this->parsedResponse;
+    }
+
+    /**
+     * Returns error description if there is any
+     *
+     * @return string|null
+     */
+    public function getError()
+    {
+        if (empty($this->parsedResponse))
+        {
+            return NULL;
+        }
+
+        return ErrorParser::parse($this->parsedResponse);
+    }
+
+    /**
+     * @param BaseRequest $request
+     */
+    public function setCustomRequest(BaseRequest $request)
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    /**
+     * @return ListStockRequest
+     */
+    public function setListStockRequest()
+    {
+        $this->request = new ListStockRequest($this->requestId, $this->companyId);
+
+        $this->requestId ++;
+
+        return $this->request;
+    }
+
+    /**
+     * @param string $orderType
+     * @return ListOrderRequest
+     */
+    public function setListOrderRequest($orderType)
+    {
+        $this->request = new ListOrderRequest($this->requestId, $this->companyId, $orderType);
+
+        $this->requestId ++;
+
+        return $this->request;
+    }
+
+    /**
+     * @param string $invoiceType
+     * @return ListInvoiceRequest
+     */
+    public function setListInvoiceRequest($invoiceType)
+    {
+        $this->request = new ListInvoiceRequest($this->requestId, $this->companyId, $invoiceType);
+
+        $this->requestId ++;
+
+        return $this->request;
+    }
+
+    /**
+     * @param InvoicesCollection $invoicesCollection
+     * @return SendInvoiceRequest
+     */
+    public function setSendInvoiceRequest(InvoicesCollection $invoicesCollection)
+    {
+        $this->request = new SendInvoiceRequest($this->requestId, $this->companyId, $invoicesCollection);
+
+        $this->requestId ++;
+
+        return $this->request;
     }
 }

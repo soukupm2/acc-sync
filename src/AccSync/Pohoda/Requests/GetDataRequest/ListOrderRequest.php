@@ -1,18 +1,27 @@
 <?php
 
-namespace AccSync\Pohoda\GetDataRequest;
+namespace AccSync\Pohoda\Requests\GetDataRequest;
 
 use AccSync\Pohoda\Data\PohodaHelper;
 
 /**
  * Class ListStockRequest
- * Invoices / Faktury
+ * Orders / Objednávky
  *
  * @package AccSync\Pohoda\GetDataRequest
  * @author miroslav.soukup2@gmail.com
  */
-class ListInvoiceRequest extends BaseGetDataRequest
+class ListOrderRequest extends BaseGetDataRequest
 {
+    /**
+     * @const Type of order: Issued
+     */
+    const ORDER_TYPE_ISSUED = 'issuedOrder';
+    /**
+     * @const Type of order: Received
+     */
+    const ORDER_TYPE_RECEIVED = 'receivedOrder';
+
     /**
      * @const Filter by date from
      */
@@ -21,11 +30,6 @@ class ListInvoiceRequest extends BaseGetDataRequest
      * @const Filter by date to
      */
     const FILTER_BY_DATE_TO = 'dateTill';
-
-    /**
-     * @const Type of order: Issued
-     */
-    const INVOICE_TYPE_ISSUED = 'issuedInvoice';
 
     /**
      * @var string $selectedCompanies Filter name for selecting companies by name
@@ -47,13 +51,13 @@ class ListInvoiceRequest extends BaseGetDataRequest
     private $inFilter = 'ico';
 
     /**
-     * @var string $invoiceType Type of invoice
+     * @var string $orderType Type of order
      */
-    private $invoiceType;
+    private $orderType;
 
-    public function __construct($requestId, $in, $invoiceType)
+    public function __construct($requestId, $in, $orderType)
     {
-        $this->invoiceType = $invoiceType;
+        $this->orderType = $orderType;
 
         parent::__construct($requestId, $in);
     }
@@ -67,15 +71,15 @@ class ListInvoiceRequest extends BaseGetDataRequest
 
         $dataPackItem = $this->addDataPackItem($request);
 
-        $listStockRequest = $dataPackItem->addChild('lst:listInvoiceRequest', NULL, self::LIST_NAMESPACE);
+        $listStockRequest = $dataPackItem->addChild('lst:listOrderRequest', NULL, self::LIST_NAMESPACE);
         $listStockRequest->addAttribute('version', '2.0');
-        $listStockRequest->addAttribute('invoiceVersion', '2.0');
-        $listStockRequest->addAttribute('invoiceType', $this->invoiceType);
+        $listStockRequest->addAttribute('orderVersion', '2.0');
+        $listStockRequest->addAttribute('orderType', $this->orderType);
 
-        $requestInvoice = $listStockRequest->addChild('lst:requestInvoice', NULL, self::LIST_NAMESPACE);
+        $requestOrder = $listStockRequest->addChild('lst:requestOrder', NULL, self::LIST_NAMESPACE);
 
         $this->requestXml = $request;
-        $this->filterParent = $requestInvoice;
+        $this->filterParent = $requestOrder;
     }
 
     /**
@@ -98,6 +102,8 @@ class ListInvoiceRequest extends BaseGetDataRequest
         {
             $this->addFilter(self::FILTER_BY_DATE_TO, PohodaHelper::formatDate($to, FALSE));
         }
+
+        return $this;
     }
 
     /**
@@ -109,15 +115,17 @@ class ListInvoiceRequest extends BaseGetDataRequest
     {
         if (empty($companies))
         {
-            return;
+            return $this;
         }
 
-        $parent = $this->addFilter($this->selectedCompanies, NULL);
+        $this->addFilter($this->selectedCompanies, NULL);
 
         foreach ($companies as $company)
         {
-            $parent->addChild($this->company, $company);
+            $this->lastFilter->addChild($this->company, $company);
         }
+
+        return $this;
     }
 
     /**
@@ -129,14 +137,16 @@ class ListInvoiceRequest extends BaseGetDataRequest
     {
         if (empty($ins))
         {
-            return;
+            return $this;
         }
 
-        $parent = $this->addFilter($this->selectedIns, NULL);
+        $this->addFilter($this->selectedIns, NULL);
 
         foreach ($ins as $in)
         {
-            $parent->addChild($this->inFilter, $in);
+            $this->lastFilter->addChild($this->inFilter, $in);
         }
+
+        return $this;
     }
 }

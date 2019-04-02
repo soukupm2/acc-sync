@@ -1,9 +1,9 @@
 <?php
 
-namespace AccSync\Pohoda\GetDataRequest;
+namespace AccSync\Pohoda\Requests\GetDataRequest;
 
-use AccSync\Pohoda\BaseRequest;
 use AccSync\Pohoda\Data\PohodaHelper;
+use AccSync\Pohoda\Requests\BaseRequest;
 
 /**
  * Class BaseGetDataRequest
@@ -37,7 +37,11 @@ abstract class BaseGetDataRequest extends BaseRequest
     /**
      * @var \SimpleXMLElement $filter Element, which contains all filter values
      */
-    private $filter;
+    protected $filter;
+    /**
+     * @var \SimpleXMLElement $lastFilter Contains last filter added (so children could be appended)
+     */
+    protected $lastFilter;
 
     /**
      * BaseGetDataRequest constructor.
@@ -57,8 +61,6 @@ abstract class BaseGetDataRequest extends BaseRequest
      *
      * @param string $filterType
      * @param mixed  $value
-     *
-     * @return \SimpleXMLElement
      */
     public function addFilter($filterType, $value)
     {
@@ -78,8 +80,8 @@ abstract class BaseGetDataRequest extends BaseRequest
             $filterType = $this->filterPrefix . $filterType;
         }
 
-        $lastFilter = $this->filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
+        $this->lastFilter = $this->filter->addChild($filterType, $value, self::FILTER_NAMESPACE);
 
-        return $lastFilter;
+        return $this;
     }
 }

@@ -25,26 +25,50 @@ class InvoiceParser
         {
             $invoices = $data->responsePackItem->listInvoice->invoice;
 
-            foreach ($invoices as $invoice)
+            if (isset($invoices->invoiceHeader) || isset($invoices->invoiceDetail) || isset($invoices->invoiceSummary))
             {
                 $invoiceHeader = NULL;
                 $invoiceDetail = NULL;
                 $invoiceSummary = NULL;
 
-                if (isset($invoice->invoiceHeader))
+                if (isset($invoices->invoiceHeader))
                 {
-                    $invoiceHeader = self::createHeader($invoice->invoiceHeader);
+                    $invoiceHeader = self::createHeader($invoices->invoiceHeader);
                 }
-                if (isset($invoice->invoiceDetail))
+                if (isset($invoices->invoiceDetail))
                 {
-                    $invoiceDetail = self::createDetail($invoice->invoiceDetail);
+                    $invoiceDetail = self::createDetail($invoices->invoiceDetail);
                 }
-                if (isset($invoice->invoiceSummary))
+                if (isset($invoices->invoiceSummary))
                 {
-                    $invoiceSummary = self::createSummary($invoice->invoiceSummary);
+                    $invoiceSummary = self::createSummary($invoices->invoiceSummary);
                 }
 
                 $invoicesCollection->add(new Invoice($invoiceHeader, $invoiceDetail, $invoiceSummary));
+            }
+            else
+            {
+                foreach ($invoices as $invoice)
+                {
+                    $invoiceHeader = NULL;
+                    $invoiceDetail = NULL;
+                    $invoiceSummary = NULL;
+
+                    if (isset($invoice->invoiceHeader))
+                    {
+                        $invoiceHeader = self::createHeader($invoice->invoiceHeader);
+                    }
+                    if (isset($invoice->invoiceDetail))
+                    {
+                        $invoiceDetail = self::createDetail($invoice->invoiceDetail);
+                    }
+                    if (isset($invoice->invoiceSummary))
+                    {
+                        $invoiceSummary = self::createSummary($invoice->invoiceSummary);
+                    }
+
+                    $invoicesCollection->add(new Invoice($invoiceHeader, $invoiceDetail, $invoiceSummary));
+                }
             }
         }
 

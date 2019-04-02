@@ -64,7 +64,7 @@ abstract class Connector
      */
     protected function createAuthToken()
     {
-        return 'Basic ' . base64_encode($this->username.':'.$this->password);
+        return 'Basic ' . base64_encode($this->createAuthCredentials());
     }
 
     /**
@@ -87,5 +87,21 @@ abstract class Connector
     public function __destruct()
     {
         curl_close($this->curl);
+    }
+
+    /**
+     * Replaces spaces in URL
+     *
+     * @param string $url
+     * @return string
+     */
+    protected static function replaceUrlSpaces($url)
+    {
+        $replacePairs = array(
+            "\t" => '%20',
+            " " => '%20',
+        );
+
+        return strtr($url, $replacePairs);
     }
 }

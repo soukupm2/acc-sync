@@ -1,6 +1,6 @@
 <?php
 
-namespace AccSync\Pohoda\GetDataRequest;
+namespace AccSync\Pohoda\Requests\GetDataRequest;
 
 /**
  * Class ListStockRequest

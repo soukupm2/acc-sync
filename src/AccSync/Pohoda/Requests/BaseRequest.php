@@ -1,6 +1,6 @@
 <?php
 
-namespace AccSync\Pohoda;
+namespace AccSync\Pohoda\Requests;
 
 abstract class BaseRequest
 {
@@ -50,6 +50,30 @@ abstract class BaseRequest
         $this->in = $in;
 
         $this->constructXml();
+    }
+
+    /**
+     * @param string $requestId
+     */
+    public function setRequestId($requestId)
+    {
+        $this->requestId = $requestId;
+
+        $this->constructXml();
+
+        return $this;
+    }
+
+    /**
+     * @param string $in
+     */
+    public function setIn($in)
+    {
+        $this->in = $in;
+
+        $this->constructXml();
+
+        return $this;
     }
 
     /**

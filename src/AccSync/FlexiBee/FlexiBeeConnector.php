@@ -86,20 +86,4 @@ class FlexiBeeConnector extends Connector
 
         return $result;
     }
-
-    /**
-     * Replaces spaces in URL
-     *
-     * @param string $url
-     * @return string
-     */
-    private static function replaceUrlSpaces($url)
-    {
-        $replacePairs = array(
-            "\t" => '%20',
-            " " => '%20',
-        );
-
-        return strtr($url, $replacePairs);
-    }
 }

@@ -1,14 +1,14 @@
 <?php
 
-namespace AccSync\Pohoda\SendDataRequest;
+namespace AccSync\Pohoda\Requests\SendDataRequest;
 
-use AccSync\Pohoda\BaseRequest;
 use AccSync\Pohoda\Collection\Invoice\InvoicesCollection;
 use AccSync\Pohoda\Entity\Invoice\Invoice;
 use AccSync\Pohoda\Entity\Invoice\InvoiceDetail;
 use AccSync\Pohoda\Entity\Invoice\InvoiceHeader;
 use AccSync\Pohoda\Entity\Invoice\InvoiceItem;
 use AccSync\Pohoda\Entity\Invoice\InvoiceSummary;
+use AccSync\Pohoda\Requests\BaseRequest;
 
 class SendInvoiceRequest extends BaseRequest
 {
