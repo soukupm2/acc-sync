@@ -2,6 +2,12 @@
 
 namespace AccSync\Pohoda\Requests;
 
+/**
+ * Class BaseRequest
+ *
+ * @package AccSync\Pohoda\Requests
+ * @author  miroslav.soukup2@gmail.com
+ */
 abstract class BaseRequest
 {
     /**

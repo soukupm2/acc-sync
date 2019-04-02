@@ -2,9 +2,6 @@
 
 namespace AccSync;
 
-use AccSync\FlexiBee\FlexiBeeConnector;
-use AccSync\Pohoda\PohodaConnector;
-
 /**
  * Class ConnectionFactory
  *
@@ -35,7 +32,7 @@ abstract class ConnectionFactory
     protected $port;
 
     /**
-     * PohodaConnectionFactory constructor.
+     * Constructor.
      *
      * @param string   $baseUri
      * @param string   $username

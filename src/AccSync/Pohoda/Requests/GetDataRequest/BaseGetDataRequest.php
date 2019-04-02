@@ -8,7 +8,7 @@ use AccSync\Pohoda\Requests\BaseRequest;
 /**
  * Class BaseGetDataRequest
  *
- * @package AccSync\Pohoda\BaseRequest
+ * @package AccSync\Pohoda\Requests\GetDataRequest
  * @author miroslav.soukup2@gmail.com
  */
 abstract class BaseGetDataRequest extends BaseRequest

@@ -10,6 +10,12 @@ use AccSync\Pohoda\Entity\Invoice\InvoiceItem;
 use AccSync\Pohoda\Entity\Invoice\InvoiceSummary;
 use AccSync\Pohoda\Requests\BaseRequest;
 
+/**
+ * Class SendInvoiceRequest
+ *
+ * @package AccSync\Pohoda\Requests\SendDataRequest
+ * @author  miroslav.soukup2@gmail.com
+ */
 class SendInvoiceRequest extends BaseRequest
 {
     /**

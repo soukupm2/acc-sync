@@ -8,7 +8,7 @@ use AccSync\Pohoda\Data\PohodaHelper;
  * Class ListStockRequest
  * Invoices / Faktury
  *
- * @package AccSync\Pohoda\GetDataRequest
+ * @package AccSync\Pohoda\Requests\GetDataRequest
  * @author miroslav.soukup2@gmail.com
  */
 class ListInvoiceRequest extends BaseGetDataRequest

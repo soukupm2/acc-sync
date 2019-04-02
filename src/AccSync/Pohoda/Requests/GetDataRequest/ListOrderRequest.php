@@ -8,7 +8,7 @@ use AccSync\Pohoda\Data\PohodaHelper;
  * Class ListStockRequest
  * Orders / Objednávky
  *
- * @package AccSync\Pohoda\GetDataRequest
+ * @package AccSync\Pohoda\Requests\GetDataRequest
  * @author miroslav.soukup2@gmail.com
  */
 class ListOrderRequest extends BaseGetDataRequest
@@ -48,7 +48,7 @@ class ListOrderRequest extends BaseGetDataRequest
     /**
      * @var string $selectedCompanies Filter name for specific company
      */
-    private $inFilter = 'ico';
+    private $inFilter = 'ftr:ico';
 
     /**
      * @var string $orderType Type of order
@@ -144,7 +144,7 @@ class ListOrderRequest extends BaseGetDataRequest
 
         foreach ($ins as $in)
         {
-            $this->lastFilter->addChild($this->inFilter, $in);
+            $this->lastFilter->addChild($this->inFilter, $in, self::FILTER_NAMESPACE);
         }
 
         return $this;

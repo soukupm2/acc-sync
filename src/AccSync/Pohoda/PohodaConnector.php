@@ -13,7 +13,6 @@ use AccSync\Pohoda\Requests\GetDataRequest\ListInvoiceRequest;
 use AccSync\Pohoda\Requests\GetDataRequest\ListOrderRequest;
 use AccSync\Pohoda\Requests\GetDataRequest\ListStockRequest;
 use AccSync\Pohoda\Requests\SendDataRequest\SendInvoiceRequest;
-use phpDocumentor\Reflection\Types\This;
 
 /**
  * Class PohodaConnector
