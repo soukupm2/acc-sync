@@ -5,6 +5,12 @@ namespace AccSync\Pohoda\Collection\Invoice;
 use AccSync\Pohoda\Collection\BaseCollection;
 use AccSync\Pohoda\Entity\Invoice\InvoiceItem;
 
+/**
+ * Class InvoiceItemsCollection
+ *
+ * @package AccSync\Pohoda\Collection\Invoice
+ * @author  miroslav.soukup2@gmail.com
+ */
 class InvoiceItemsCollection extends BaseCollection
 {
     /**

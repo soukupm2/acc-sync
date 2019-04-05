@@ -2,6 +2,12 @@
 
 namespace AccSync\Pohoda\Enum;
 
+/**
+ * Class EResponseErrorCodes
+ *
+ * @package AccSync\Pohoda\Enum
+ * @author  miroslav.soukup2@gmail.com
+ */
 class EResponseErrorCodes
 {
     const BAD_REQUEST = 400;

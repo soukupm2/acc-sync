@@ -2,6 +2,12 @@
 
 namespace AccSync\Pohoda\Entity;
 
+/**
+ * Class Address
+ *
+ * @package AccSync\Pohoda\Entity
+ * @author  miroslav.soukup2@gmail.com
+ */
 class Address
 {
     /**

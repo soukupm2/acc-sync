@@ -2,6 +2,12 @@
 
 namespace AccSync\Pohoda\Entity\Order;
 
+/**
+ * Class OrderSummary
+ *
+ * @package AccSync\Pohoda\Entity\Order
+ * @author  miroslav.soukup2@gmail.com
+ */
 class OrderSummary
 {
     /**

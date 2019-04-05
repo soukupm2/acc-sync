@@ -4,6 +4,12 @@ namespace AccSync\Pohoda\Entity\Order;
 
 use AccSync\Pohoda\Entity\Address;
 
+/**
+ * Class OrderHeader
+ *
+ * @package AccSync\Pohoda\Entity\Order
+ * @author  miroslav.soukup2@gmail.com
+ */
 class OrderHeader
 {
     /**
@@ -86,6 +92,10 @@ class OrderHeader
      * @var bool $markRecord
      */
     private $markRecord;
+    /**
+     * @var string $priceLevelIds
+     */
+    private $priceLevelIds;
 
     /**
      * @return int
@@ -405,5 +415,21 @@ class OrderHeader
     public function setMarkRecord($markRecord)
     {
         $this->markRecord = $markRecord;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceLevelIds()
+    {
+        return $this->priceLevelIds;
+    }
+
+    /**
+     * @param string $priceLevelIds
+     */
+    public function setPriceLevelIds($priceLevelIds)
+    {
+        $this->priceLevelIds = $priceLevelIds;
     }
 }

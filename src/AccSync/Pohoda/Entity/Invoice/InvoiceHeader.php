@@ -5,6 +5,12 @@ namespace AccSync\Pohoda\Entity\Invoice;
 use AccSync\Pohoda\Data\PohodaHelper;
 use AccSync\Pohoda\Entity\Address;
 
+/**
+ * Class InvoiceHeader
+ *
+ * @package AccSync\Pohoda\Entity\Invoice
+ * @author  miroslav.soukup2@gmail.com
+ */
 class InvoiceHeader
 {
     /**

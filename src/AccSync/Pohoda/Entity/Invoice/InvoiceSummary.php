@@ -2,6 +2,12 @@
 
 namespace AccSync\Pohoda\Entity\Invoice;
 
+/**
+ * Class InvoiceSummary
+ *
+ * @package AccSync\Pohoda\Entity\Invoice
+ * @author  miroslav.soukup2@gmail.com
+ */
 class InvoiceSummary
 {
     /**

@@ -5,6 +5,12 @@ namespace AccSync\Pohoda\Collection\Order;
 use AccSync\Pohoda\Collection\BaseCollection;
 use AccSync\Pohoda\Entity\Order\Order;
 
+/**
+ * Class OrdersCollection
+ *
+ * @package AccSync\Pohoda\Collection\Order
+ * @author  miroslav.soukup2@gmail.com
+ */
 class OrdersCollection extends BaseCollection
 {
     /**

@@ -2,6 +2,12 @@
 
 namespace AccSync\Pohoda\Data;
 
+/**
+ * Class ErrorParser
+ *
+ * @package AccSync\Pohoda\Data
+ * @author  miroslav.soukup2@gmail.com
+ */
 class ErrorParser
 {
     /**

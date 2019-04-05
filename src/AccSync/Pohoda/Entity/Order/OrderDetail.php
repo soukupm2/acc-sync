@@ -4,6 +4,12 @@ namespace AccSync\Pohoda\Entity\Order;
 
 use AccSync\Pohoda\Collection\Order\OrderItemsCollection;
 
+/**
+ * Class OrderDetail
+ *
+ * @package AccSync\Pohoda\Entity\Order
+ * @author  miroslav.soukup2@gmail.com
+ */
 class OrderDetail
 {
     /**

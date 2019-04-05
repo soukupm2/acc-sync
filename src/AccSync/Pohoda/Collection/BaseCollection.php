@@ -1,8 +1,13 @@
 <?php
 
-
 namespace AccSync\Pohoda\Collection;
 
+/**
+ * Class BaseCollection
+ *
+ * @package AccSync\Pohoda\Collection
+ * @author  miroslav.soukup2@gmail.com
+ */
 abstract class BaseCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     /** @var array $collection */

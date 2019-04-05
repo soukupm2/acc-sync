@@ -164,6 +164,10 @@ class OrderParser
         {
             $header->setMarkRecord($orderHeader->markRecord);
         }
+        if (isset($orderHeader->priceLevel->ids))
+        {
+            $header->setPriceLevelIds($orderHeader->priceLevel->ids);
+        }
 
         return $header;
     }

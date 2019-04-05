@@ -11,6 +11,12 @@ use AccSync\Pohoda\Entity\Invoice\InvoiceHeader;
 use AccSync\Pohoda\Entity\Invoice\InvoiceItem;
 use AccSync\Pohoda\Entity\Invoice\InvoiceSummary;
 
+/**
+ * Class InvoiceParser
+ *
+ * @package AccSync\Pohoda\Data
+ * @author  miroslav.soukup2@gmail.com
+ */
 class InvoiceParser
 {
     /**
