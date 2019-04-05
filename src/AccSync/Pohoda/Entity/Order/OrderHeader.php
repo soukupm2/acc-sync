@@ -96,6 +96,10 @@ class OrderHeader
      * @var string $priceLevelIds
      */
     private $priceLevelIds;
+    /**
+     * @var int $priceLevelId
+     */
+    private $priceLevelId;
 
     /**
      * @return int
@@ -431,5 +435,21 @@ class OrderHeader
     public function setPriceLevelIds($priceLevelIds)
     {
         $this->priceLevelIds = $priceLevelIds;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriceLevelId()
+    {
+        return $this->priceLevelId;
+    }
+
+    /**
+     * @param int $priceLevelId
+     */
+    public function setPriceLevelId($priceLevelId)
+    {
+        $this->priceLevelId = $priceLevelId;
     }
 }

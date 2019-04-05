@@ -11,10 +11,16 @@ use AccSync\Pohoda\Entity\Order\OrderHeader;
 use AccSync\Pohoda\Entity\Order\OrderItem;
 use AccSync\Pohoda\Entity\Order\OrderSummary;
 
+/**
+ * Class OrderParser
+ *
+ * @package AccSync\Pohoda\Data
+ * @author  miroslav.soukup2@gmail.com
+ */
 class OrderParser
 {
     /**
-     * @param \stdClass $data Data which was received as respose from ListInvoiceRequest request
+     * @param \stdClass $data Data which was received as response from OrderInvoiceRequest request
      * @return OrdersCollection
      */
     public static function parse(\stdClass $data)
@@ -164,6 +170,10 @@ class OrderParser
         {
             $header->setMarkRecord($orderHeader->markRecord);
         }
+        if (isset($orderHeader->priceLevel->id))
+        {
+            $header->setPriceLevelId($orderHeader->priceLevel->id);
+        }
         if (isset($orderHeader->priceLevel->ids))
         {
             $header->setPriceLevelIds($orderHeader->priceLevel->ids);
@@ -172,6 +182,10 @@ class OrderParser
         return $header;
     }
 
+    /**
+     * @param \stdClass $data
+     * @return Address
+     */
     private static function setHeaderAddress(\stdClass $data)
     {
         $address = new Address();

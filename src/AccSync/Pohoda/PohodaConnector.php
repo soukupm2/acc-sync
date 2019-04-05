@@ -4,6 +4,7 @@ namespace AccSync\Pohoda;
 
 use AccSync\Connector;
 use AccSync\Pohoda\Collection\Invoice\InvoicesCollection;
+use AccSync\Pohoda\Collection\Order\OrdersCollection;
 use AccSync\Pohoda\Data\ErrorParser;
 use AccSync\Pohoda\Data\XMLParser;
 use AccSync\Pohoda\Enum\EResponseErrorCodes;
@@ -13,6 +14,7 @@ use AccSync\Pohoda\Requests\GetDataRequest\ListInvoiceRequest;
 use AccSync\Pohoda\Requests\GetDataRequest\ListOrderRequest;
 use AccSync\Pohoda\Requests\GetDataRequest\ListStockRequest;
 use AccSync\Pohoda\Requests\SendDataRequest\SendInvoiceRequest;
+use AccSync\Pohoda\Requests\SendDataRequest\SendOrderRequest;
 
 /**
  * Class PohodaConnector
@@ -22,10 +24,6 @@ use AccSync\Pohoda\Requests\SendDataRequest\SendInvoiceRequest;
  */
 class PohodaConnector extends Connector
 {
-    /**
-     * @var BaseRequest $request
-     */
-    private $request;
     /**
      * @var \DOMDocument $domResponse
      */
@@ -253,6 +251,19 @@ class PohodaConnector extends Connector
     public function setSendInvoiceRequest(InvoicesCollection $invoicesCollection)
     {
         $this->request = new SendInvoiceRequest($this->requestId, $this->companyId, $invoicesCollection);
+
+        $this->requestId ++;
+
+        return $this->request;
+    }
+
+    /**
+     * @param OrdersCollection $ordersCollection
+     * @return SendOrderRequest
+     */
+    public function setSendOrdersRequest(OrdersCollection $ordersCollection)
+    {
+        $this->request = new SendOrderRequest($this->requestId, $this->companyId, $ordersCollection);
 
         $this->requestId ++;
 

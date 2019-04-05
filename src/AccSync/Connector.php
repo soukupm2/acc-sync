@@ -38,6 +38,10 @@ abstract class Connector
      * @var string $companyId
      */
     protected $companyId;
+    /**
+     * @var $request
+     */
+    protected $request;
 
     /**
      * Connector constructor.

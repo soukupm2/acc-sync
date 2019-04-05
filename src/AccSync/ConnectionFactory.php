@@ -61,4 +61,6 @@ abstract class ConnectionFactory
         $this->companyId = $companyId;
         $this->port = $port;
     }
+
+    public abstract function create();
 }
