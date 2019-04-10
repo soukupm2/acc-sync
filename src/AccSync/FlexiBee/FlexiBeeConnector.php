@@ -3,7 +3,7 @@
 namespace AccSync\FlexiBee;
 
 use AccSync\Connector;
-use AccSync\FlexiBee\GetDataRequest\BaseGetDataRequest;
+use AccSync\FlexiBee\Requests\GetDataRequest\BaseGetDataRequest;
 
 /**
  * Class FlexiBeeConnector
@@ -56,7 +56,7 @@ class FlexiBeeConnector extends Connector
     }
 
     /**
-     * Sends the request to Pohoda API
+     * Sends the request to FlexiBee API
      * Returns \stdClass with the result data
      *
      * @param BaseGetDataRequest $request

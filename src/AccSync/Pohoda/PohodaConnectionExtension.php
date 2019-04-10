@@ -1,15 +1,15 @@
 <?php
 
-namespace AccSync\NetteExtension;
+namespace AccSync\Pohoda;
 
-use AccSync\Pohoda\PohodaConnectionFactory;
+use Nette\DI\ServiceCreationException;
 
 class PohodaConnectionExtension extends \Nette\DI\CompilerExtension
 {
-    const BASE_URI = 'base_uri';
+    const BASE_URI = 'baseUri';
     const USERNAME = 'username';
     const PASSWORD = 'password';
-    const COMPANY_ID = 'company_id';
+    const COMPANY_ID = 'companyId';
     const PORT = 'port';
 
     const REQUIRED_PARAMS = [
@@ -50,7 +50,7 @@ class PohodaConnectionExtension extends \Nette\DI\CompilerExtension
         $this->setUpParams();
 
         $builder = $this->getContainerBuilder();
-        $builder->addDefinition($this->prefix('articles'))
+        $builder->addDefinition($this->prefix('pohoda.connector'))
             ->setFactory(PohodaConnectionFactory::class)
             ->setArguments([$this->baseUri, $this->username, $this->password, $this->companyId, $this->port]);
     }
@@ -68,7 +68,7 @@ class PohodaConnectionExtension extends \Nette\DI\CompilerExtension
         {
             if (!isset($configParams[$required]))
             {
-                throw new \Nette\Neon\Exception('Missing parameter ' . $required . ' in configuration file!');
+                throw new ServiceCreationException('Missing parameter ' . $required . ' in configuration file!');
             }
         }
 

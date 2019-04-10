@@ -1,6 +1,6 @@
 <?php
 
-namespace AccSync\FlexiBee\GetDataRequest;
+namespace AccSync\FlexiBee\Requests\GetDataRequest;
 
 /**
  * Class ReceivedInvoiceRequest
@@ -8,7 +8,7 @@ namespace AccSync\FlexiBee\GetDataRequest;
  * @package AccSync\FlexiBee\GetDataRequest
  * @author miroslav.soukup2@gmail.com
  */
-class ReceivedInvoiceRequest
+class ReceivedInvoiceRequest extends BaseGetDataRequest
 {
     const REGISTER = 'faktura-vydana';
 

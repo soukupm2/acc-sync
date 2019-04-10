@@ -1,6 +1,6 @@
 <?php
 
-namespace AccSync\FlexiBee\GetDataRequest;
+namespace AccSync\FlexiBee\Requests\GetDataRequest;
 
 /**
  * Class PriceListRequest
