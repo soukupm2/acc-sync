@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack id="Za001" ico="12345678" application="StwTest" version="2.0" note="export zásob"  
+xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"  
+xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd" 
+xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" 
+xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd"  
+xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+  <dat:dataPackItem id="a55" version="2.0">
+  <!-- export zásoby -->
+    <lStk:listStockRequest version="2.0" stockVersion="2.0">
+      <lStk:requestStock>
+        <ftr:filter>
+          <ftr:storage>
+            <typ:ids>ZBOŽÍ/Nábytek/Pro firmy</typ:ids>
+          </ftr:storage>
+        </ftr:filter>
+      </lStk:requestStock>
+    </lStk:listStockRequest>
+  </dat:dataPackItem>
+</dat:dataPack>

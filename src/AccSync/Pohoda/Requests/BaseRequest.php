@@ -170,4 +170,14 @@ abstract class BaseRequest
     {
         return $this->requestXml;
     }
+
+    /**
+     * Option to insert custom XML
+     *
+     * @param \SimpleXMLElement $xml
+     */
+    public function setCustomXml(\SimpleXMLElement $xml)
+    {
+        $this->requestXml = $xml;
+    }
 }

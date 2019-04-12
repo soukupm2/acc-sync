@@ -3,6 +3,7 @@
 namespace AccSync\Pohoda\Requests\GetDataRequest;
 
 use AccSync\Pohoda\Data\PohodaHelper;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * Class ListStockRequest
@@ -105,18 +106,27 @@ class ListInvoiceRequest extends BaseGetDataRequest
     /**
      * Filters by company names
      *
-     * @param array $companies
+     * @param array|string $companies
      */
-    public function addFilterCompanyName(array $companies)
+    public function addFilterCompanyName($companies)
     {
         if (empty($companies))
         {
             return $this;
         }
 
+        if (is_array($companies))
+        {
+            $data = $companies;
+        }
+        else
+        {
+            $data[] = $companies;
+        }
+
         $this->addFilter($this->selectedCompanies, NULL);
 
-        foreach ($companies as $company)
+        foreach ($data as $company)
         {
             $this->lastFilter->addChild($this->company, $company);
         }
@@ -127,18 +137,33 @@ class ListInvoiceRequest extends BaseGetDataRequest
     /**
      * Filters by company identification numbers (ICO)
      *
-     * @param array $ins
+     * @param int|array $ins
      */
-    public function addFilterIns(array $ins)
+    public function addFilterIns($ins)
     {
         if (empty($ins))
         {
             return $this;
         }
 
+        $data = [];
+
+        if (is_array($ins))
+        {
+            $data = $ins;
+        }
+        elseif (is_numeric($ins))
+        {
+            $data[] = $ins;
+        }
+        else
+        {
+            return $this;
+        }
+
         $this->addFilter($this->selectedIns, NULL);
 
-        foreach ($ins as $in)
+        foreach ($data as $in)
         {
             $this->lastFilter->addChild($this->inFilter, $in);
         }

@@ -131,18 +131,33 @@ class ListOrderRequest extends BaseGetDataRequest
     /**
      * Filters by company identification numbers (ICO)
      *
-     * @param array $ins
+     * @param array|int $ins
      */
-    public function addFilterIns(array $ins)
+    public function addFilterIns($ins)
     {
         if (empty($ins))
         {
             return $this;
         }
 
+        $data = [];
+
+        if (is_array($ins))
+        {
+            $data = $ins;
+        }
+        elseif (is_numeric($ins))
+        {
+            $data[] = $ins;
+        }
+        else
+        {
+            return $this;
+        }
+
         $this->addFilter($this->selectedIns, NULL);
 
-        foreach ($ins as $in)
+        foreach ($data as $in)
         {
             $this->lastFilter->addChild($this->inFilter, $in, self::FILTER_NAMESPACE);
         }

@@ -18,14 +18,6 @@ class ListStockRequest extends BaseGetDataRequest
      */
     const FILTER_BY_SUPPLY_CODE = 'code';
     /**
-     * @const Filter by store
-     */
-    const FILTER_BY_STORE = 'store';
-    /**
-     * @const Filter by store division
-     */
-    const FILTER_BY_STORE_DIVISION = 'storage';
-    /**
      * @const Filter by has internet
      */
     const FILTER_BY_STORE_INTERNET = 'internet';
@@ -45,6 +37,10 @@ class ListStockRequest extends BaseGetDataRequest
      * @var string $ftrTypeIds
      */
     private $ftrTypeIds = 'typ:ids';
+    /**
+     * @var string $ftrTypeId
+     */
+    private $ftrTypeId = 'typ:id';
 
     /**
      * @inheritdoc
@@ -66,20 +62,20 @@ class ListStockRequest extends BaseGetDataRequest
     }
 
     /**
-     * Filters by store IDs
+     * Filters by store IDs (name)
      *
-     * @param array $storeIds
+     * @param array $storeNames
      */
-    public function addFilterStoreIds(array $storeIds)
+    public function addFilterStoreName(array $storeNames)
     {
-        if (empty($ins))
+        if (empty($storeNames))
         {
             return $this;
         }
 
         $this->addFilter($this->ftrStoreIds, NULL);
 
-        foreach ($storeIds as $id)
+        foreach ($storeNames as $id)
         {
             $this->lastFilter->addChild($this->ftrTypeIds, $id, self::TYPE_NAMESPACE);
         }
@@ -88,20 +84,42 @@ class ListStockRequest extends BaseGetDataRequest
     }
 
     /**
+     * Filters by store IDs
+     *
+     * @param array $storeIds
+     */
+    public function addFilterStoreIds(array $storeIds)
+    {
+        if (empty($storeIds))
+        {
+            return $this;
+        }
+
+        $this->addFilter($this->ftrStoreIds, NULL);
+
+        foreach ($storeIds as $id)
+        {
+            $this->lastFilter->addChild($this->ftrTypeId, $id, self::TYPE_NAMESPACE);
+        }
+
+        return $this;
+    }
+
+    /**
      * Filters by store division IDs
      *
-     * @param array $storageDivisions
+     * @param array $storage
      */
-    public function addFilterStorageDivision(array $storageDivisions)
+    public function addFilterStorage(array $storage)
     {
-        if (empty($ins))
+        if (empty($storage))
         {
             return $this;
         }
 
         $this->addFilter($this->ftrStorageIds, NULL);
 
-        foreach ($storageDivisions as $id)
+        foreach ($storage as $id)
         {
             $this->lastFilter->addChild($this->ftrTypeIds, $id, self::TYPE_NAMESPACE);
         }

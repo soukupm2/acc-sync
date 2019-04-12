@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<rsp:responsePack xmlns:rsp="http://www.stormware.cz/schema/version_2/response.xsd"
+                  xmlns:rdc="http://www.stormware.cz/schema/version_2/documentresponse.xsd"
+                  xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd"
+                  xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd"
+                  xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd"
+                  xmlns:lAdb="http://www.stormware.cz/schema/version_2/list_addBook.xsd"
+                  xmlns:acu="http://www.stormware.cz/schema/version_2/accountingunit.xsd"
+                  xmlns:inv="http://www.stormware.cz/schema/version_2/invoice.xsd"
+                  xmlns:vch="http://www.stormware.cz/schema/version_2/voucher.xsd"
+                  xmlns:int="http://www.stormware.cz/schema/version_2/intDoc.xsd"
+                  xmlns:stk="http://www.stormware.cz/schema/version_2/stock.xsd"
+                  xmlns:ord="http://www.stormware.cz/schema/version_2/order.xsd"
+                  xmlns:ofr="http://www.stormware.cz/schema/version_2/offer.xsd"
+                  xmlns:enq="http://www.stormware.cz/schema/version_2/enquiry.xsd"
+                  xmlns:vyd="http://www.stormware.cz/schema/version_2/vydejka.xsd"
+                  xmlns:pri="http://www.stormware.cz/schema/version_2/prijemka.xsd"
+                  xmlns:bal="http://www.stormware.cz/schema/version_2/balance.xsd"
+                  xmlns:pre="http://www.stormware.cz/schema/version_2/prevodka.xsd"
+                  xmlns:vyr="http://www.stormware.cz/schema/version_2/vyroba.xsd"
+                  xmlns:pro="http://www.stormware.cz/schema/version_2/prodejka.xsd"
+                  xmlns:con="http://www.stormware.cz/schema/version_2/contract.xsd"
+                  xmlns:adb="http://www.stormware.cz/schema/version_2/addressbook.xsd"
+                  xmlns:prm="http://www.stormware.cz/schema/version_2/parameter.xsd"
+                  xmlns:lCon="http://www.stormware.cz/schema/version_2/list_contract.xsd"
+                  xmlns:ctg="http://www.stormware.cz/schema/version_2/category.xsd"
+                  xmlns:ipm="http://www.stormware.cz/schema/version_2/intParam.xsd"
+                  xmlns:str="http://www.stormware.cz/schema/version_2/storage.xsd"
+                  xmlns:idp="http://www.stormware.cz/schema/version_2/individualPrice.xsd"
+                  xmlns:sup="http://www.stormware.cz/schema/version_2/supplier.xsd"
+                  xmlns:prn="http://www.stormware.cz/schema/version_2/print.xsd"
+                  xmlns:sEET="http://www.stormware.cz/schema/version_2/sendEET.xsd"
+                  xmlns:act="http://www.stormware.cz/schema/version_2/accountancy.xsd"
+                  xmlns:bnk="http://www.stormware.cz/schema/version_2/bank.xsd"
+                  xmlns:sto="http://www.stormware.cz/schema/version_2/store.xsd"
+                  xmlns:grs="http://www.stormware.cz/schema/version_2/groupStocks.xsd"
+                  xmlns:acp="http://www.stormware.cz/schema/version_2/actionPrice.xsd"
+                  xmlns:csh="http://www.stormware.cz/schema/version_2/cashRegister.xsd"
+                  xmlns:bka="http://www.stormware.cz/schema/version_2/bankAccount.xsd"
+                  xmlns:ilt="http://www.stormware.cz/schema/version_2/inventoryLists.xsd"
+                  xmlns:nms="http://www.stormware.cz/schema/version_2/numericalSeries.xsd"
+                  xmlns:pay="http://www.stormware.cz/schema/version_2/payment.xsd"
+                  xmlns:mKasa="http://www.stormware.cz/schema/version_2/mKasa.xsd"
+                  xmlns:gdp="http://www.stormware.cz/schema/version_2/GDPR.xsd"
+                  xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" version="2.0" id="1" state="ok"
+                  programVersion="12002.7 (26.10.2018)" ico="12345678"
+                  note="AccSync\Pohoda\Requests\GetDataRequest\ListStockRequest">
+    <rsp:responsePackItem version="2.0" id="1" state="ok">
+        <lStk:listStock version="2.0" dateTimeStamp="2019-04-10T14:59:39" dateValidFrom="2019-04-10" state="ok">
+            <lStk:stock version="2.0">
+                <stk:stockHeader>
+                    <stk:id>19</stk:id>
+                    <stk:stockType>card</stk:stockType>
+                    <stk:code>Z220</stk:code>
+                    <stk:PLU>650</stk:PLU>
+                    <stk:isSales>true</stk:isSales>
+                    <stk:isSerialNumber>false</stk:isSerialNumber>
+                    <stk:isInternet>true</stk:isInternet>
+                    <stk:isBatch>false</stk:isBatch>
+                    <stk:purchasingRateVAT>high</stk:purchasingRateVAT>
+                    <stk:sellingRateVAT>high</stk:sellingRateVAT>
+                    <stk:name>Židle Z220</stk:name>
+                    <stk:nameComplement/>
+                    <stk:unit>ks</stk:unit>
+                    <stk:storage>
+                        <typ:id>8</typ:id>
+                        <typ:ids>ZBOŽÍ/Nábytek/Pro firmy</typ:ids>
+                    </stk:storage>
+                    <stk:typePrice>
+                        <typ:id>4</typ:id>
+                        <typ:ids>Nábytek</typ:ids>
+                    </stk:typePrice>
+                    <stk:weightedPurchasePrice>1658.91</stk:weightedPurchasePrice>
+                    <stk:purchasingPrice>1640</stk:purchasingPrice>
+                    <stk:sellingPrice>1968</stk:sellingPrice>
+                    <stk:count>10.0</stk:count>
+                    <stk:countReceivedOrders>0.0</stk:countReceivedOrders>
+                    <stk:reservation>0.0</stk:reservation>
+                    <stk:reclamation>0.0</stk:reclamation>
+                    <stk:orderQuantity>0.0</stk:orderQuantity>
+                    <stk:countIssuedOrders>0.0</stk:countIssuedOrders>
+                    <stk:guaranteeType>none</stk:guaranteeType>
+                    <stk:guarantee>0</stk:guarantee>
+                    <stk:producer>Jaromír Novák - Nábytek</stk:producer>
+                    <stk:news>false</stk:news>
+                    <stk:clearanceSale>false</stk:clearanceSale>
+                    <stk:sale>false</stk:sale>
+                    <stk:recommended>false</stk:recommended>
+                    <stk:discount>false</stk:discount>
+                    <stk:prepare>false</stk:prepare>
+                    <stk:controlLimitTaxLiability>false</stk:controlLimitTaxLiability>
+                    <stk:description>Židle Z220. Dodávána ve dvou barevných provedeních - dub, buk.</stk:description>
+                    <stk:description2>Prodejná samostatně, je i součástí dodávky Kompletní jídelní soupravy - sleva 5%. Termín dodání do tří dnů od převzetí objednávky.</stk:description2>
+                    <stk:markRecord>false</stk:markRecord>
+                </stk:stockHeader>
+                <stk:stockPriceItem>
+                    <stk:stockPrice>
+                        <typ:id>7</typ:id>
+                        <typ:ids>Sleva 4</typ:ids>
+                        <typ:price>1810.6</typ:price>
+                    </stk:stockPrice>
+                    <stk:stockPrice>
+                        <typ:id>6</typ:id>
+                        <typ:ids>Sleva 3</typ:ids>
+                        <typ:price>1849.9</typ:price>
+                    </stk:stockPrice>
+                    <stk:stockPrice>
+                        <typ:id>5</typ:id>
+                        <typ:ids>Sleva 2</typ:ids>
+                        <typ:price>1889.3</typ:price>
+                    </stk:stockPrice>
+                    <stk:stockPrice>
+                        <typ:id>3</typ:id>
+                        <typ:ids>MOC</typ:ids>
+                        <typ:price>2579.7</typ:price>
+                    </stk:stockPrice>
+                    <stk:stockPrice>
+                        <typ:id>2</typ:id>
+                        <typ:ids>Sleva 1</typ:ids>
+                        <typ:price>1928.6</typ:price>
+                    </stk:stockPrice>
+                    <stk:stockPrice>
+                        <typ:id>1</typ:id>
+                        <typ:ids>Prodejní</typ:ids>
+                        <typ:price>1968</typ:price>
+                    </stk:stockPrice>
+                    <stk:stockPrice>
+                        <typ:id>8</typ:id>
+                        <typ:ids>Vedlejší</typ:ids>
+                        <typ:price>106.95</typ:price>
+                    </stk:stockPrice>
+                </stk:stockPriceItem>
+            </lStk:stock>
+        </lStk:listStock>
+    </rsp:responsePackItem>
+</rsp:responsePack>

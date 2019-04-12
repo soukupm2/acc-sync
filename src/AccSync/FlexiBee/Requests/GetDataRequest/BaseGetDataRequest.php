@@ -2,12 +2,12 @@
 
 namespace AccSync\FlexiBee\Requests\GetDataRequest;
 
-use AccSync\FlexiBee\BaseRequest;
+use AccSync\FlexiBee\Requests\BaseRequest;
 
 /**
  * Class BaseGetDataRequest
  *
- * @package AccSync\FlexiBee\GetDataRequest
+ * @package AccSync\FlexiBee\Requests\GetDataRequest
  * @author miroslav.soukup2@gmail.com
  */
 abstract class BaseGetDataRequest extends BaseRequest

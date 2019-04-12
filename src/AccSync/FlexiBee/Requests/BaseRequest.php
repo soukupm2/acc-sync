@@ -1,6 +1,6 @@
 <?php
 
-namespace AccSync\FlexiBee;
+namespace AccSync\FlexiBee\Requests;
 
 /**
  * Class BaseRequest

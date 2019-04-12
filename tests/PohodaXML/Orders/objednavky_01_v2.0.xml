@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack id="001" ico="12345678" application="StwTest" version="2.0" note="Požadavek na export výběru objednávek"         
+ xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"   
+ xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd"      
+ xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd"         
+ xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd"  >
+ 
+  <dat:dataPackItem id="li1" version="2.0">
+  <!-- export objednávek dle datumu  vystavení  -->
+    <lst:listOrderRequest version="2.0" orderType="receivedOrder" orderVersion="2.0">
+    <lst:requestOrder>
+      <ftr:filter>
+        <ftr:dateFrom>2018-01-21</ftr:dateFrom>
+        <ftr:dateTill>2018-01-23</ftr:dateTill>
+      </ftr:filter>
+    </lst:requestOrder> 
+    </lst:listOrderRequest>
+</dat:dataPackItem>
+</dat:dataPack>
