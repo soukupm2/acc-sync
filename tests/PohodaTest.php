@@ -538,7 +538,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
     /**
      * Test, which compares expected request format and values with actual format from Pohoda accounting system
      *
-     * Filter by ICO = 85236972
+     * Filter by Company name = AK - Media a. s.
      */
     public function testListInvoiceRequestCompany()
     {
@@ -562,7 +562,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
     /**
      * Test, which compares expected response with actual response from Pohoda accounting system
      *
-     * Filter by ICO = 85236972
+     * Filter by Company name = AK - Media a. s.
      */
     public function testListInvoiceResponseByCompany()
     {
@@ -574,6 +574,53 @@ class PohodaTest extends PHPUnit_Framework_TestCase
         $connection->sendRequest();
 
         $dom = $this->loadTemplate('PohodaXML/Invoices/faktury_03_v2.0_response.xml');
+
+        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
+
+        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+    }
+
+    /**
+     * Test, which compares expected request format and values with actual format from Pohoda accounting system
+     *
+     * Filter by ICO = 85236972, Company name = AK - Media a. s.
+     */
+    public function testListInvoiceRequestCompanyAndIco()
+    {
+        $request = new \AccSync\Pohoda\Requests\GetDataRequest\ListInvoiceRequest(
+            '1',
+            12345678,
+            \AccSync\Pohoda\Requests\GetDataRequest\ListInvoiceRequest::INVOICE_TYPE_ISSUED
+        );
+
+        $request->addFilterIns(85236972);
+        $request->addFilterCompanyName('AK - Media a. s.');
+
+        $dom = $this->loadTemplate('PohodaXML/Invoices/faktury_04_v2.0.xml');
+
+        $domRequest = dom_import_simplexml($request->getRequestXml());
+
+        $this->assertEqualXMLStructure($dom->documentElement, $domRequest);
+
+        $this->checkXmlValues($dom->saveXML(), $request->getRequestXml()->saveXML());
+    }
+
+    /**
+     * Test, which compares expected response with actual response from Pohoda accounting system
+     *
+     * Filter by ICO = 85236972, Company name = AK - Media a. s.
+     */
+    public function testListInvoiceResponseByCompanyAndIco()
+    {
+        $connection = $this->createProperConnection();
+
+        $connection->setListInvoiceRequest(\AccSync\Pohoda\Requests\GetDataRequest\ListInvoiceRequest::INVOICE_TYPE_ISSUED)
+            ->addFilterIns(85236972)
+            ->addFilterCompanyName('AK - Media a. s.');
+
+        $connection->sendRequest();
+
+        $dom = $this->loadTemplate('PohodaXML/Invoices/faktury_04_v2.0_response.xml');
 
         $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
 

@@ -42,6 +42,18 @@ abstract class Connector
      * @var $request
      */
     protected $request;
+    /**
+     * @var \stdClass $stdClassResponse
+     */
+    protected $stdClassResponse = NULL;
+    /**
+     * @var bool $hasError
+     */
+    protected $hasError = FALSE;
+    /**
+     * @var string $error
+     */
+    protected $error = NULL;
 
     /**
      * Connector constructor.
@@ -108,4 +120,33 @@ abstract class Connector
 
         return strtr($url, $replacePairs);
     }
+
+    /**
+     * @return bool
+     */
+    public function hasError()
+    {
+        return $this->hasError;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getStdClassResponse()
+    {
+        return $this->stdClassResponse;
+    }
+
+    /**
+     * Function that sets up parameters $hasError and $error
+     */
+    abstract protected function setUpError();
 }

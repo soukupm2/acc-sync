@@ -3,7 +3,12 @@
 namespace AccSync\FlexiBee;
 
 use AccSync\Connector;
-use AccSync\FlexiBee\Requests\GetDataRequest\BaseGetDataRequest;
+use AccSync\Data\ErrorParser;
+use AccSync\FlexiBee\Exception\FlexiBeeConnectionException;
+use AccSync\FlexiBee\Requests\BaseRequest;
+use AccSync\FlexiBee\Requests\GetDataRequest\IssuedInvoiceRequest;
+use AccSync\FlexiBee\Requests\GetDataRequest\PriceListRequest;
+use AccSync\FlexiBee\Requests\GetDataRequest\ReceivedInvoiceRequest;
 
 /**
  * Class FlexiBeeConnector
@@ -56,26 +61,57 @@ class FlexiBeeConnector extends Connector
     }
 
     /**
+     * Returns an error if there is one otherwise empty string
+     *
+     * @throws FlexiBeeConnectionException
+     */
+    private function verifySuccess()
+    {
+        if (empty($this->curl))
+        {
+            throw new FlexiBeeConnectionException('curl not initialized');
+        }
+        else
+        {
+            $errNo = curl_errno($this->curl);
+
+            if ($errNo !== 0)
+            {
+                $errString = (string)curl_error($this->curl);
+                throw new FlexiBeeConnectionException($errString, $errNo);
+            }
+        }
+    }
+
+    /**
      * Sends the request to FlexiBee API
      * Returns \stdClass with the result data
      *
-     * @param BaseGetDataRequest $request
      * @return \stdClass
+     * @throws FlexiBeeConnectionException
      */
-    public function sendRequest(BaseGetDataRequest $request)
+    public function sendRequest()
     {
-        $url = $this->getBaseUrl() . $request->getRegister();
-
-        if (!empty($request->getCustomUrl()))
+        if (empty($this->request))
         {
-            $url .= '/' . $request->getCustomUrl();
-        }
-        elseif (!empty($request->getUrlFilter()))
-        {
-            $url .= '/' . $request->getUrlFilter();
+            throw new FlexiBeeConnectionException('Request has not been set.');
         }
 
-        if ($request->isSummedResult())
+        $this->hasError = FALSE;
+        $this->error = NULL;
+
+        $url = $this->getBaseUrl() . $this->request->getRegister();
+
+        if (!empty($this->request->getCustomUrl()))
+        {
+            $url .= '/' . $this->request->getCustomUrl();
+        }
+        elseif (!empty($this->request->getUrlFilter()))
+        {
+            $url .= '/' . $this->request->getUrlFilter();
+        }
+
+        if ($this->request->isSummedResult())
         {
             $url .= '/$sum';
         }
@@ -84,6 +120,74 @@ class FlexiBeeConnector extends Connector
 
         $result = curl_exec($this->curl);
 
-        return $result;
+        $this->verifySuccess();
+
+        $this->stdClassResponse = json_decode($result);
+
+        $this->setUpError();
+
+        return $this->stdClassResponse;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setUpError()
+    {
+        if (empty($this->stdClassResponse))
+        {
+            $this->hasError = FALSE;
+            $this->error = 'Empty response';
+        }
+
+        $parsedError = ErrorParser::parseFlexiBee($this->stdClassResponse);
+
+        if ($parsedError !== NULL)
+        {
+            $this->hasError = TRUE;
+            $this->error = $parsedError;
+        }
+    }
+
+    /**
+     * @param BaseRequest $request
+     *
+     * @return FlexiBeeConnector
+     */
+    public function setCustomRequest(BaseRequest $request)
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    /**
+     * @return IssuedInvoiceRequest
+     */
+    public function getIssuedInvoices()
+    {
+        $this->request = new IssuedInvoiceRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return PriceListRequest
+     */
+    public function getPriceList()
+    {
+        $this->request = new PriceListRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return ReceivedInvoiceRequest
+     */
+    public function getReceivedInvoices()
+    {
+        $this->request = new ReceivedInvoiceRequest();
+
+        return $this->request;
     }
 }

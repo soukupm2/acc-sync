@@ -21,7 +21,7 @@ class OrderParser
 {
     /**
      * @param \stdClass $data Data which was received as response from OrderInvoiceRequest request
-     * @return OrdersCollection
+     * @return OrdersCollection|NULL
      */
     public static function parse(\stdClass $data)
     {
@@ -76,6 +76,10 @@ class OrderParser
                     $ordersCollection->add(new Order($orderHeader, $orderDetail, $orderSummary));
                 }
             }
+        }
+        else
+        {
+            return NULL;
         }
 
         return $ordersCollection;

@@ -3,9 +3,9 @@
 namespace AccSync\Pohoda;
 
 use AccSync\Connector;
+use AccSync\Data\ErrorParser;
 use AccSync\Pohoda\Collection\Invoice\InvoicesCollection;
 use AccSync\Pohoda\Collection\Order\OrdersCollection;
-use AccSync\Pohoda\Data\ErrorParser;
 use AccSync\Pohoda\Data\XMLParser;
 use AccSync\Pohoda\Enum\EResponseErrorCodes;
 use AccSync\Pohoda\Exception\PohodaConnectionException;
@@ -28,10 +28,6 @@ class PohodaConnector extends Connector
      * @var \DOMDocument $domResponse
      */
     private $domResponse = NULL;
-    /**
-     * @var \stdClass $parsedResponse
-     */
-    private $parsedResponse = NULL;
     /**
      * @var int Default number of request
      */
@@ -108,13 +104,13 @@ class PohodaConnector extends Connector
     /**
      * Returns an error if there is one otherwise empty string
      *
-     * @throws PohodaConnectionException|\BadMethodCallException
+     * @throws PohodaConnectionException
      */
     private function verifySuccess()
     {
         if (empty($this->curl))
         {
-            throw new \BadMethodCallException('curl not initialized');
+            throw new PohodaConnectionException('curl not initialized');
         }
         else
         {
@@ -147,6 +143,9 @@ class PohodaConnector extends Connector
             throw new PohodaConnectionException('Request has not been set.');
         }
 
+        $this->hasError = FALSE;
+        $this->error = NULL;
+
         $response = $this->getCurlResponse($this->request);
 
         $this->verifySuccess();
@@ -158,7 +157,9 @@ class PohodaConnector extends Connector
 
         $result = XMLParser::parseXML($dom->saveXML());
 
-        $this->parsedResponse = $result;
+        $this->stdClassResponse = $result;
+
+        $this->setUpError();
 
         return $result;
     }
@@ -174,30 +175,28 @@ class PohodaConnector extends Connector
     }
 
     /**
-     * @return \stdClass
+     * @inheritDoc
      */
-    public function getParsedResponse()
+    protected function setUpError()
     {
-        return $this->parsedResponse;
-    }
-
-    /**
-     * Returns error description if there is any
-     *
-     * @return string|null
-     */
-    public function getError()
-    {
-        if (empty($this->parsedResponse))
+        if (empty($this->stdClassResponse))
         {
-            return NULL;
+            $this->hasError = FALSE;
+            $this->error = 'Empty response';
         }
 
-        return ErrorParser::parse($this->parsedResponse);
+        $parsedError = ErrorParser::parsePohoda($this->stdClassResponse);
+
+        if ($parsedError !== NULL)
+        {
+            $this->hasError = TRUE;
+            $this->error = $parsedError;
+        }
     }
 
     /**
      * @param BaseRequest $request
+     * @return PohodaConnector
      */
     public function setCustomRequest(BaseRequest $request)
     {

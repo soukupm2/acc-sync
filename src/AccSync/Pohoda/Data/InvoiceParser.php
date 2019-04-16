@@ -21,7 +21,7 @@ class InvoiceParser
 {
     /**
      * @param \stdClass $data Data which was received as respose from ListInvoiceRequest request
-     * @return InvoicesCollection
+     * @return InvoicesCollection|NULL
      */
     public static function parse(\stdClass $data)
     {
@@ -76,6 +76,10 @@ class InvoiceParser
                     $invoicesCollection->add(new Invoice($invoiceHeader, $invoiceDetail, $invoiceSummary));
                 }
             }
+        }
+        else
+        {
+            return NULL;
         }
 
         return $invoicesCollection;
