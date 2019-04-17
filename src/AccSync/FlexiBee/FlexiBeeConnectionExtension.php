@@ -38,7 +38,7 @@ class FlexiBeeConnectionExtension extends \Nette\DI\CompilerExtension
     /**
      * @var int $port
      */
-    private $port;
+    private $port = NULL;
 
     /**
      * Loads configuration from config file
@@ -76,6 +76,10 @@ class FlexiBeeConnectionExtension extends \Nette\DI\CompilerExtension
         $this->username = $configParams[self::USERNAME];
         $this->password = $configParams[self::PASSWORD];
         $this->companyId = $configParams[self::COMPANY_ID];
-        $this->port = $configParams[self::PORT];
+
+        if (!empty($configParams[self::PORT]))
+        {
+            $this->port = $configParams[self::PORT];
+        }
     }
 }
