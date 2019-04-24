@@ -296,102 +296,18 @@ class OrderParser
         $detail = new OrderDetail();
         $orderItemsCollection = new OrderItemsCollection();
 
-        foreach ($orderDetail->orderItem as $item)
+        if (is_countable($orderDetail->orderItem))
         {
-            $orderItem = new OrderItem();
+            foreach ($orderDetail->orderItem as $item)
+            {
+                $orderItem = self::setOrderItem($item);
 
-            if (isset($item->id))
-            {
-                $orderItem->setId($item->id);
+                $orderItemsCollection->add($orderItem);
             }
-            if (isset($item->text))
-            {
-                $orderItem->setText($item->text);
-            }
-            if (isset($item->quantity))
-            {
-                $orderItem->setQuantity($item->quantity);
-            }
-            if (isset($item->delivered))
-            {
-                $orderItem->setDelivered($item->delivered);
-            }
-            if (isset($item->unit))
-            {
-                $orderItem->setUnit($item->unit);
-            }
-            if (isset($item->coefficient))
-            {
-                $orderItem->setCoefficient($item->coefficient);
-            }
-            if (isset($item->payVAT))
-            {
-                $orderItem->setPayVAT($item->payVAT);
-            }
-            if (isset($item->rateVAT))
-            {
-                $orderItem->setRateVAT($item->rateVAT);
-            }
-            if (isset($item->discountPercentage))
-            {
-                $orderItem->setDiscountPercentage($item->discountPercentage);
-            }
-            if (isset($item->homeCurrency->unitPrice))
-            {
-                $orderItem->setHomeCurrencyUnitPrice($item->homeCurrency->unitPrice);
-            }
-            if (isset($item->homeCurrency->price))
-            {
-                $orderItem->setHomeCurrencyPrice($item->homeCurrency->price);
-            }
-            if (isset($item->homeCurrency->priceVAT))
-            {
-                $orderItem->setHomeCurrencyPriceVAT($item->homeCurrency->priceVAT);
-            }
-            if (isset($item->homeCurrency->priceSum))
-            {
-                $orderItem->setHomeCurrencyPriceSum($item->homeCurrency->priceSum);
-            }
-            if (isset($item->foreignCurrency->unitPrice))
-            {
-                $orderItem->setForeignCurrencyUnitPrice($item->foreignCurrency->unitPrice);
-            }
-            if (isset($item->foreignCurrency->price))
-            {
-                $orderItem->setForeignCurrencyPrice($item->foreignCurrency->price);
-            }
-            if (isset($item->foreignCurrency->priceVAT))
-            {
-                $orderItem->setForeignCurrencyPriceVAT($item->foreignCurrency->priceVAT);
-            }
-            if (isset($item->foreignCurrency->priceSum))
-            {
-                $orderItem->setForeignCurrencyPriceSum($item->foreignCurrency->priceSum);
-            }
-            if (isset($item->code))
-            {
-                $orderItem->setCode($item->code);
-            }
-            if (isset($item->stockItem->store->id))
-            {
-                $orderItem->setStoreId($item->stockItem->store->id);
-            }
-            if (isset($item->stockItem->store->ids))
-            {
-                $orderItem->setStoreIds($item->stockItem->store->ids);
-            }
-            if (isset($item->stockItem->stockItem->id))
-            {
-                $orderItem->setStockItemId($item->stockItem->stockItem->id);
-            }
-            if (isset($item->stockItem->stockItem->ids))
-            {
-                $orderItem->setStockItemIds($item->stockItem->stockItem->ids);
-            }
-            if (isset($item->stockItem->stockItem->PLU))
-            {
-                $orderItem->setStockItemPLU($item->stockItem->stockItem->PLU);
-            }
+        }
+        elseif (isset($orderDetail->orderItem))
+        {
+            $orderItem = self::setOrderItem($orderDetail->orderItem);
 
             $orderItemsCollection->add($orderItem);
         }
@@ -399,6 +315,110 @@ class OrderParser
         $detail->setOrderItemsCollection($orderItemsCollection);
 
         return $detail;
+    }
+
+    /**
+     * @param \stdClass $item
+     * @return OrderItem
+     */
+    private static function setOrderItem(\stdClass $item)
+    {
+        $orderItem = new OrderItem();
+
+        if (isset($item->id))
+        {
+            $orderItem->setId($item->id);
+        }
+        if (isset($item->text))
+        {
+            $orderItem->setText($item->text);
+        }
+        if (isset($item->quantity))
+        {
+            $orderItem->setQuantity($item->quantity);
+        }
+        if (isset($item->delivered))
+        {
+            $orderItem->setDelivered($item->delivered);
+        }
+        if (isset($item->unit))
+        {
+            $orderItem->setUnit($item->unit);
+        }
+        if (isset($item->coefficient))
+        {
+            $orderItem->setCoefficient($item->coefficient);
+        }
+        if (isset($item->payVAT))
+        {
+            $orderItem->setPayVAT($item->payVAT);
+        }
+        if (isset($item->rateVAT))
+        {
+            $orderItem->setRateVAT($item->rateVAT);
+        }
+        if (isset($item->discountPercentage))
+        {
+            $orderItem->setDiscountPercentage($item->discountPercentage);
+        }
+        if (isset($item->homeCurrency->unitPrice))
+        {
+            $orderItem->setHomeCurrencyUnitPrice($item->homeCurrency->unitPrice);
+        }
+        if (isset($item->homeCurrency->price))
+        {
+            $orderItem->setHomeCurrencyPrice($item->homeCurrency->price);
+        }
+        if (isset($item->homeCurrency->priceVAT))
+        {
+            $orderItem->setHomeCurrencyPriceVAT($item->homeCurrency->priceVAT);
+        }
+        if (isset($item->homeCurrency->priceSum))
+        {
+            $orderItem->setHomeCurrencyPriceSum($item->homeCurrency->priceSum);
+        }
+        if (isset($item->foreignCurrency->unitPrice))
+        {
+            $orderItem->setForeignCurrencyUnitPrice($item->foreignCurrency->unitPrice);
+        }
+        if (isset($item->foreignCurrency->price))
+        {
+            $orderItem->setForeignCurrencyPrice($item->foreignCurrency->price);
+        }
+        if (isset($item->foreignCurrency->priceVAT))
+        {
+            $orderItem->setForeignCurrencyPriceVAT($item->foreignCurrency->priceVAT);
+        }
+        if (isset($item->foreignCurrency->priceSum))
+        {
+            $orderItem->setForeignCurrencyPriceSum($item->foreignCurrency->priceSum);
+        }
+        if (isset($item->code))
+        {
+            $orderItem->setCode($item->code);
+        }
+        if (isset($item->stockItem->store->id))
+        {
+            $orderItem->setStoreId($item->stockItem->store->id);
+        }
+        if (isset($item->stockItem->store->ids))
+        {
+            $orderItem->setStoreIds($item->stockItem->store->ids);
+        }
+        if (isset($item->stockItem->stockItem->id))
+        {
+            $orderItem->setStockItemId($item->stockItem->stockItem->id);
+        }
+        if (isset($item->stockItem->stockItem->ids))
+        {
+            $orderItem->setStockItemIds($item->stockItem->stockItem->ids);
+        }
+        if (isset($item->stockItem->stockItem->PLU))
+        {
+            $orderItem->setStockItemPLU($item->stockItem->stockItem->PLU);
+        }
+
+        return $orderItem;
     }
 
     /**

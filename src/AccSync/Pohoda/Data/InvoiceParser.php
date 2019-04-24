@@ -340,118 +340,18 @@ class InvoiceParser
         $detail = new InvoiceDetail();
         $invoiceItemsCollection = new InvoiceItemsCollection();
 
-        foreach ($invoiceDetail->invoiceItem as $item)
+        if (is_countable($invoiceDetail->invoiceItem))
         {
-            $invoiceItem = new InvoiceItem();
+            foreach ($invoiceDetail->invoiceItem as $item)
+            {
+                $invoiceItem = self::setInvoiceDetailItem($item);
 
-            if (isset($item->id))
-            {
-                $invoiceItem->setId($item->id);
+                $invoiceItemsCollection->add($invoiceItem);
             }
-            if (isset($item->text))
-            {
-                $invoiceItem->setText($item->text);
-            }
-            if (isset($item->quantity))
-            {
-                $invoiceItem->setQuantity($item->quantity);
-            }
-            if (isset($item->unit))
-            {
-                $invoiceItem->setUnit($item->unit);
-            }
-            if (isset($item->coefficient))
-            {
-                $invoiceItem->setCoefficient($item->coefficient);
-            }
-            if (isset($item->payVAT))
-            {
-                $invoiceItem->setPayVAT($item->payVAT);
-            }
-            if (isset($item->rateVAT))
-            {
-                $invoiceItem->setRateVAT($item->rateVAT);
-            }
-            if (isset($item->discountPercentage))
-            {
-                $invoiceItem->setDiscountPercentage($item->discountPercentage);
-            }
-            if (isset($item->homeCurrency->unitPrice))
-            {
-                $invoiceItem->setHomeCurrencyUnitPrice($item->homeCurrency->unitPrice);
-            }
-            if (isset($item->homeCurrency->price))
-            {
-                $invoiceItem->setHomeCurrencyPrice($item->homeCurrency->price);
-            }
-            if (isset($item->homeCurrency->priceVAT))
-            {
-                $invoiceItem->setHomeCurrencyPriceVAT($item->homeCurrency->priceVAT);
-            }
-            if (isset($item->homeCurrency->priceSum))
-            {
-                $invoiceItem->setHomeCurrencyPriceSum($item->homeCurrency->priceSum);
-            }
-            if (isset($item->foreignCurrency->unitPrice))
-            {
-                $invoiceItem->setForeignCurrencyUnitPrice($item->foreignCurrency->unitPrice);
-            }
-            if (isset($item->foreignCurrency->price))
-            {
-                $invoiceItem->setForeignCurrencyPrice($item->foreignCurrency->price);
-            }
-            if (isset($item->foreignCurrency->priceVAT))
-            {
-                $invoiceItem->setForeignCurrencyPriceVAT($item->foreignCurrency->priceVAT);
-            }
-            if (isset($item->foreignCurrency->priceSum))
-            {
-                $invoiceItem->setForeignCurrencyPriceSum($item->foreignCurrency->priceSum);
-            }
-            if (isset($item->code))
-            {
-                $invoiceItem->setCode($item->code);
-            }
-            if (isset($item->guarantee))
-            {
-                $invoiceItem->setGuarantee($item->guarantee);
-            }
-            if (isset($item->guaranteeType))
-            {
-                $invoiceItem->setGuaranteeType($item->guaranteeType);
-            }
-            if (isset($item->stockItem->store->id))
-            {
-                $invoiceItem->setStoreId($item->stockItem->store->id);
-            }
-            if (isset($item->stockItem->store->ids))
-            {
-                $invoiceItem->setStoreIds($item->stockItem->store->ids);
-            }
-            if (isset($item->stockItem->stockItem->id))
-            {
-                $invoiceItem->setStockItemId($item->stockItem->stockItem->id);
-            }
-            if (isset($item->stockItem->stockItem->ids))
-            {
-                $invoiceItem->setStockItemIds($item->stockItem->stockItem->ids);
-            }
-            if (isset($item->stockItem->stockItem->PLU))
-            {
-                $invoiceItem->setStockItemPLU($item->stockItem->stockItem->PLU);
-            }
-            if (isset($item->stockItem->serialNumber))
-            {
-                $invoiceItem->setSerialNumber($item->stockItem->serialNumber);
-            }
-            if (isset($item->PDP))
-            {
-                $invoiceItem->setPDP($item->PDP);
-            }
-            if (isset($item->sourceDocument->number))
-            {
-                $invoiceItem->setSourceDocumentNumber($item->sourceDocument->number);
-            }
+        }
+        elseif (isset($invoiceDetail->invoiceItem))
+        {
+            $invoiceItem = self::setInvoiceDetailItem($invoiceDetail->invoiceItem);
 
             $invoiceItemsCollection->add($invoiceItem);
         }
@@ -459,6 +359,126 @@ class InvoiceParser
         $detail->setInvoiceItemsCollection($invoiceItemsCollection);
 
         return $detail;
+    }
+
+    /**
+     * @param \stdClass $item
+     * @return InvoiceItem
+     */
+    private static function setInvoiceDetailItem(\stdClass $item)
+    {
+        $invoiceItem = new InvoiceItem();
+
+        if (isset($item->id))
+        {
+            $invoiceItem->setId($item->id);
+        }
+        if (isset($item->text))
+        {
+            $invoiceItem->setText($item->text);
+        }
+        if (isset($item->quantity))
+        {
+            $invoiceItem->setQuantity($item->quantity);
+        }
+        if (isset($item->unit))
+        {
+            $invoiceItem->setUnit($item->unit);
+        }
+        if (isset($item->coefficient))
+        {
+            $invoiceItem->setCoefficient($item->coefficient);
+        }
+        if (isset($item->payVAT))
+        {
+            $invoiceItem->setPayVAT($item->payVAT);
+        }
+        if (isset($item->rateVAT))
+        {
+            $invoiceItem->setRateVAT($item->rateVAT);
+        }
+        if (isset($item->discountPercentage))
+        {
+            $invoiceItem->setDiscountPercentage($item->discountPercentage);
+        }
+        if (isset($item->homeCurrency->unitPrice))
+        {
+            $invoiceItem->setHomeCurrencyUnitPrice($item->homeCurrency->unitPrice);
+        }
+        if (isset($item->homeCurrency->price))
+        {
+            $invoiceItem->setHomeCurrencyPrice($item->homeCurrency->price);
+        }
+        if (isset($item->homeCurrency->priceVAT))
+        {
+            $invoiceItem->setHomeCurrencyPriceVAT($item->homeCurrency->priceVAT);
+        }
+        if (isset($item->homeCurrency->priceSum))
+        {
+            $invoiceItem->setHomeCurrencyPriceSum($item->homeCurrency->priceSum);
+        }
+        if (isset($item->foreignCurrency->unitPrice))
+        {
+            $invoiceItem->setForeignCurrencyUnitPrice($item->foreignCurrency->unitPrice);
+        }
+        if (isset($item->foreignCurrency->price))
+        {
+            $invoiceItem->setForeignCurrencyPrice($item->foreignCurrency->price);
+        }
+        if (isset($item->foreignCurrency->priceVAT))
+        {
+            $invoiceItem->setForeignCurrencyPriceVAT($item->foreignCurrency->priceVAT);
+        }
+        if (isset($item->foreignCurrency->priceSum))
+        {
+            $invoiceItem->setForeignCurrencyPriceSum($item->foreignCurrency->priceSum);
+        }
+        if (isset($item->code))
+        {
+            $invoiceItem->setCode($item->code);
+        }
+        if (isset($item->guarantee))
+        {
+            $invoiceItem->setGuarantee($item->guarantee);
+        }
+        if (isset($item->guaranteeType))
+        {
+            $invoiceItem->setGuaranteeType($item->guaranteeType);
+        }
+        if (isset($item->stockItem->store->id))
+        {
+            $invoiceItem->setStoreId($item->stockItem->store->id);
+        }
+        if (isset($item->stockItem->store->ids))
+        {
+            $invoiceItem->setStoreIds($item->stockItem->store->ids);
+        }
+        if (isset($item->stockItem->stockItem->id))
+        {
+            $invoiceItem->setStockItemId($item->stockItem->stockItem->id);
+        }
+        if (isset($item->stockItem->stockItem->ids))
+        {
+            $invoiceItem->setStockItemIds($item->stockItem->stockItem->ids);
+        }
+        if (isset($item->stockItem->stockItem->PLU))
+        {
+            $invoiceItem->setStockItemPLU($item->stockItem->stockItem->PLU);
+        }
+        if (isset($item->stockItem->serialNumber))
+        {
+            $invoiceItem->setSerialNumber($item->stockItem->serialNumber);
+        }
+        if (isset($item->PDP))
+        {
+            $invoiceItem->setPDP($item->PDP);
+        }
+        if (isset($item->sourceDocument->number))
+        {
+            $invoiceItem->setSourceDocumentNumber($item->sourceDocument->number);
+        }
+
+        return $invoiceItem;
     }
 
     /**
