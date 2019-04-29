@@ -64,18 +64,27 @@ class ListStockRequest extends BaseGetDataRequest
     /**
      * Filters by store IDs (name)
      *
-     * @param array $storeNames
+     * @param array|string $storeNames
      */
-    public function addFilterStoreName(array $storeNames)
+    public function addFilterStoreName($storeNames)
     {
         if (empty($storeNames))
         {
             return $this;
         }
 
+        if (is_array($storeNames))
+        {
+            $data = $storeNames;
+        }
+        else
+        {
+            $data[] = $storeNames;
+        }
+
         $this->addFilter($this->ftrStoreIds, NULL);
 
-        foreach ($storeNames as $id)
+        foreach ($data as $id)
         {
             $this->lastFilter->addChild($this->ftrTypeIds, $id, self::TYPE_NAMESPACE);
         }
@@ -86,18 +95,31 @@ class ListStockRequest extends BaseGetDataRequest
     /**
      * Filters by store IDs
      *
-     * @param array $storeIds
+     * @param array|int $storeIds
      */
-    public function addFilterStoreIds(array $storeIds)
+    public function addFilterStoreIds($storeIds)
     {
         if (empty($storeIds))
         {
             return $this;
         }
 
+        if (is_array($storeIds))
+        {
+            $data = $storeIds;
+        }
+        elseif (is_numeric($storeIds))
+        {
+            $data[] = $storeIds;
+        }
+        else
+        {
+            return $this;
+        }
+
         $this->addFilter($this->ftrStoreIds, NULL);
 
-        foreach ($storeIds as $id)
+        foreach ($data as $id)
         {
             $this->lastFilter->addChild($this->ftrTypeId, $id, self::TYPE_NAMESPACE);
         }
@@ -108,18 +130,27 @@ class ListStockRequest extends BaseGetDataRequest
     /**
      * Filters by store division IDs
      *
-     * @param array $storage
+     * @param array|string $storage
      */
-    public function addFilterStorage(array $storage)
+    public function addFilterStorage($storage)
     {
         if (empty($storage))
         {
             return $this;
         }
 
+        if (is_array($storage))
+        {
+            $data = $storage;
+        }
+        else
+        {
+            $data[] = $storage;
+        }
+
         $this->addFilter($this->ftrStorageIds, NULL);
 
-        foreach ($storage as $id)
+        foreach ($data as $id)
         {
             $this->lastFilter->addChild($this->ftrTypeIds, $id, self::TYPE_NAMESPACE);
         }

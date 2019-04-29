@@ -240,23 +240,23 @@ class SendOrderRequest extends BaseRequest
         }
         if (is_bool($header->isExecuted()) || !empty($header->isExecuted()))
         {
-            $ordHeader->addChild('ord:isExecuted', $header->isExecuted(), self::ORDER_NAMESPACE);
+            $ordHeader->addChild('ord:isExecuted', self::boolToString($header->isExecuted()), self::ORDER_NAMESPACE);
         }
         if (is_bool($header->isDelivered()) || !empty($header->isDelivered()))
         {
-            $ordHeader->addChild('ord:isDelivered', $header->isDelivered(), self::ORDER_NAMESPACE);
+            $ordHeader->addChild('ord:isDelivered', self::boolToString($header->isDelivered()), self::ORDER_NAMESPACE);
         }
         if (is_bool($header->isReserved()) || !empty($header->isReserved()))
         {
-            $ordHeader->addChild('ord:isReserved', $header->isReserved(), self::ORDER_NAMESPACE);
+            $ordHeader->addChild('ord:isReserved', self::boolToString($header->isReserved()), self::ORDER_NAMESPACE);
         }
         if (is_bool($header->isPermanentDocument()) || !empty($header->isPermanentDocument()))
         {
-            $ordHeader->addChild('ord:permanentDocument', $header->isPermanentDocument(), self::ORDER_NAMESPACE);
+            $ordHeader->addChild('ord:permanentDocument', self::boolToString($header->isPermanentDocument()), self::ORDER_NAMESPACE);
         }
         if (is_bool($header->isMarkRecord()) || !empty($header->isMarkRecord()))
         {
-            $ordHeader->addChild('ord:markRecord', $header->isMarkRecord(), self::ORDER_NAMESPACE);
+            $ordHeader->addChild('ord:markRecord', self::boolToString($header->isMarkRecord()), self::ORDER_NAMESPACE);
         }
     }
 
@@ -310,7 +310,7 @@ class SendOrderRequest extends BaseRequest
             }
             if (is_bool($item->isPayVAT()) || !empty($item->isPayVAT()))
             {
-                $xmlItem->addChild('ord:payVat', $item->isPayVAT(), self::ORDER_NAMESPACE);
+                $xmlItem->addChild('ord:payVat', self::boolToString($item->isPayVAT()), self::ORDER_NAMESPACE);
             }
             if ($item->getDiscountPercentage() == 0 || !empty($item->getDiscountPercentage()))
             {

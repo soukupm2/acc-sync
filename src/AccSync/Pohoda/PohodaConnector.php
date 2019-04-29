@@ -6,6 +6,7 @@ use AccSync\Connector;
 use AccSync\Data\ErrorParser;
 use AccSync\Pohoda\Collection\Invoice\InvoicesCollection;
 use AccSync\Pohoda\Collection\Order\OrdersCollection;
+use AccSync\Pohoda\Collection\Stock\StockCollection;
 use AccSync\Pohoda\Data\XMLParser;
 use AccSync\Pohoda\Enum\EResponseErrorCodes;
 use AccSync\Pohoda\Exception\PohodaConnectionException;
@@ -15,6 +16,7 @@ use AccSync\Pohoda\Requests\GetDataRequest\ListOrderRequest;
 use AccSync\Pohoda\Requests\GetDataRequest\ListStockRequest;
 use AccSync\Pohoda\Requests\SendDataRequest\SendInvoiceRequest;
 use AccSync\Pohoda\Requests\SendDataRequest\SendOrderRequest;
+use AccSync\Pohoda\Requests\SendDataRequest\SendStockRequest;
 
 /**
  * Class PohodaConnector
@@ -263,6 +265,19 @@ class PohodaConnector extends Connector
     public function setSendOrdersRequest(OrdersCollection $ordersCollection)
     {
         $this->request = new SendOrderRequest($this->requestId, $this->companyId, $ordersCollection);
+
+        $this->requestId ++;
+
+        return $this->request;
+    }
+
+    /**
+     * @param StockCollection $stockCollection
+     * @return SendStockRequest
+     */
+    public function setSendStockRequest(StockCollection $stockCollection)
+    {
+        $this->request = new SendStockRequest($this->requestId, $this->companyId, $stockCollection);
 
         $this->requestId ++;
 

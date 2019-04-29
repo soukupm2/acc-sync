@@ -23,6 +23,10 @@ class StockHeader
      */
     private $code;
     /**
+     * @var string $ean
+     */
+    private $ean;
+    /**
      * @var int $PLU
      */
     private $PLU;
@@ -90,6 +94,22 @@ class StockHeader
      * @var float $sellingPrice
      */
     private $sellingPrice;
+    /**
+     * @var float $limitMin
+     */
+    private $limitMin;
+    /**
+     * @var float $limitMax
+     */
+    private $limitMax;
+    /**
+     * @var float $mass
+     */
+    private $mass;
+    /**
+     * @var string $shortName
+     */
+    private $shortName;
     /**
      * @var float $count
      */
@@ -170,6 +190,14 @@ class StockHeader
      * @var bool $markRecord
      */
     private $markRecord;
+    /**
+     * @var string $note
+     */
+    private $note;
+    /**
+     * @var $yield
+     */
+    private $yield;
 
     /**
      * @return int
@@ -809,5 +837,117 @@ class StockHeader
     public function setMarkRecord($markRecord)
     {
         $this->markRecord = $markRecord;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEan()
+    {
+        return $this->ean;
+    }
+
+    /**
+     * @param string $ean
+     */
+    public function setEan($ean)
+    {
+        $this->ean = $ean;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLimitMin()
+    {
+        return $this->limitMin;
+    }
+
+    /**
+     * @param float $limitMin
+     */
+    public function setLimitMin($limitMin)
+    {
+        $this->limitMin = $limitMin;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLimitMax()
+    {
+        return $this->limitMax;
+    }
+
+    /**
+     * @param float $limitMax
+     */
+    public function setLimitMax($limitMax)
+    {
+        $this->limitMax = $limitMax;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMass()
+    {
+        return $this->mass;
+    }
+
+    /**
+     * @param float $mass
+     */
+    public function setMass($mass)
+    {
+        $this->mass = $mass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortName()
+    {
+        return $this->shortName;
+    }
+
+    /**
+     * @param string $shortName
+     */
+    public function setShortName($shortName)
+    {
+        $this->shortName = $shortName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param string $note
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getYield()
+    {
+        return $this->yield;
+    }
+
+    /**
+     * @param mixed $yield
+     */
+    public function setYield($yield)
+    {
+        $this->yield = $yield;
     }
 }

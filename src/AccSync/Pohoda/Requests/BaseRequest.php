@@ -180,4 +180,13 @@ abstract class BaseRequest
     {
         $this->requestXml = $xml;
     }
+
+    /**
+     * @param bool $var
+     * @return string
+     */
+    protected static function boolToString($var)
+    {
+        return $var ? 'true' : 'false';
+    }
 }
