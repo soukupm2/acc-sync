@@ -83,7 +83,7 @@ class ListOrderRequest extends BaseGetDataRequest
     }
 
     /**
-     * Filters invoices by date range
+     * Filters orders by date range
      *
      * @param \DateTime|null $from
      * @param \DateTime|null $to
@@ -111,7 +111,7 @@ class ListOrderRequest extends BaseGetDataRequest
      *
      * @param array $companies
      */
-    public function addFilterCompanyName(array $companies)
+    public function addFilterCompanyName($companies)
     {
         $data = [];
 

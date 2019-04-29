@@ -3,7 +3,6 @@
 namespace AccSync\Pohoda\Requests\GetDataRequest;
 
 use AccSync\Pohoda\Data\PohodaHelper;
-use phpDocumentor\Reflection\Types\This;
 
 /**
  * Class ListStockRequest
@@ -27,6 +26,10 @@ class ListInvoiceRequest extends BaseGetDataRequest
      * @const Type of order: Issued
      */
     const INVOICE_TYPE_ISSUED = 'issuedInvoice';
+    /**
+     * @const Type of order: Issued
+     */
+    const INVOICE_TYPE_RECEIVED = 'receivedInvoice';
 
     /**
      * @var string $selectedCompanies Filter name for selecting companies by name
