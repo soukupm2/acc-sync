@@ -15,4 +15,6 @@ class EDefinedValues
     const ME = 'me()';
     const NOW = 'now()';
     const CURRENT_YEAR = 'currentYear()';
+    const ASC = 'asc';
+    const DESC = 'desc';
 }

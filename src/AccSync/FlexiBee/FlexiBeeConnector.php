@@ -4,11 +4,15 @@ namespace AccSync\FlexiBee;
 
 use AccSync\Connector;
 use AccSync\Data\ErrorParser;
+use AccSync\FlexiBee\Data\FlexiBeeParser;
 use AccSync\FlexiBee\Exception\FlexiBeeConnectionException;
 use AccSync\FlexiBee\Requests\BaseRequest;
+use AccSync\FlexiBee\Requests\GetDataRequest\BaseGetDataRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\IssuedInvoiceRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\PriceListRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\ReceivedInvoiceRequest;
+use AccSync\FlexiBee\Requests\SendDataRequest\BaseSendDataRequest;
+use AccSync\FlexiBee\Requests\SendDataRequest\SendPriceItemRequest;
 
 /**
  * Class FlexiBeeConnector
@@ -100,33 +104,75 @@ class FlexiBeeConnector extends Connector
         $this->hasError = FALSE;
         $this->error = NULL;
 
-        $url = $this->getBaseUrl() . $this->request->getRegister();
-
-        if (!empty($this->request->getCustomUrl()))
+        if ($this->request instanceof BaseGetDataRequest)
         {
-            $url .= '/' . $this->request->getCustomUrl();
+            /** @var BaseGetDataRequest $request */
+            $request = $this->request;
+
+            $url = $this->getBaseUrl() . $request->getRegister();
+
+            if (!empty($request->getCustomUrl()))
+            {
+                $url .= '/' . $request->getCustomUrl();
+            }
+            elseif (!empty($request->getUrlFilter()))
+            {
+                $url .= '/' . $request->getUrlFilter();
+            }
+
+            if (!empty($request->getOrder()) && !empty($request->getLimit()))
+            {
+                $url .= '?' . $request->getOrder() . '&' . $request->getLimit();
+            }
+            elseif (!empty($request->getOrder()))
+            {
+                $url .= '?' . $request->getOrder();
+            }
+            elseif (!empty($request->getLimit()))
+            {
+                $url .= '?' . $request->getLimit();
+            }
+
+            if ($request->isSummedResult())
+            {
+                $url .= '/$sum';
+            }
         }
-        elseif (!empty($this->request->getUrlFilter()))
+        elseif ($this->request instanceof BaseSendDataRequest)
         {
-            $url .= '/' . $this->request->getUrlFilter();
-        }
+            /** @var BaseSendDataRequest $request */
+            $request = $this->request;
 
-        if ($this->request->isSummedResult())
+            $url = $this->getBaseUrl() . $request->getRegister() . '.json';
+
+            curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, $request->getRawData());
+        }
+        else
         {
-            $url .= '/$sum';
+            $this->hasError = TRUE;
+            $this->error = 'Invalid request';
         }
 
-        curl_setopt($this->curl, CURLOPT_URL, self::replaceUrlSpaces($url));
+        if (!$this->hasError && isset($url))
+        {
+            curl_setopt($this->curl, CURLOPT_URL, self::replaceUrlSpaces($url));
 
-        $result = curl_exec($this->curl);
+            $result = curl_exec($this->curl);
 
-        $this->verifySuccess();
+            $this->verifySuccess();
 
-        $this->stdClassResponse = json_decode($result);
+            $response = json_decode($result);
 
-        $this->setUpError();
+            $this->stdClassResponse = $response;
 
-        return $this->stdClassResponse;
+            $this->setUpError();
+
+            return FlexiBeeParser::parse($this->stdClassResponse, $this->request);
+        }
+
+        return null;
     }
 
     /**
@@ -187,6 +233,16 @@ class FlexiBeeConnector extends Connector
     public function getReceivedInvoices()
     {
         $this->request = new ReceivedInvoiceRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return SendPriceItemRequest
+     */
+    public function sendPriceListItem()
+    {
+        $this->request = new SendPriceItemRequest();
 
         return $this->request;
     }

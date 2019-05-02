@@ -46,6 +46,29 @@ class ErrorParser
             {
                 return $data->winstrom->message;
             }
+            if (isset($data->winstrom->results))
+            {
+                foreach ($data->winstrom->results as $result)
+                {
+                    if (isset($result->errors))
+                    {
+                        $messages = [];
+
+                        foreach ($result->errors as $error)
+                        {
+                            if (isset($error->message))
+                            {
+                                $messages[] = $error->message;
+                            }
+                        }
+
+                        if (!empty($messages))
+                        {
+                            return implode(' ', $messages);
+                        }
+                    }
+                }
+            }
 
             return 'Unknown error';
         }

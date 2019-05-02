@@ -2,6 +2,10 @@
 
 require './vendor/autoload.php';
 
+/**
+ * Class PohodaTest
+ * run: ./vendor/bin/phpunit tests/PohodaTest.php
+ */
 class PohodaTest extends PHPUnit_Framework_TestCase
 {
     const BASE_URI = 'localhost';

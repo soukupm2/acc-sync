@@ -5,12 +5,12 @@ namespace AccSync\FlexiBee\UrlFilter;
 use AccSync\FlexiBee\Enum\EOperators;
 
 /**
- * Class Condition
+ * Class FlexiBeeCondition
  *
  * @package AccSync\FlexiBee\UrlFilter
  * @author miroslav.soukup2@gmail.com
  */
-class Condition
+class FlexiBeeCondition
 {
     /**
      * @var string $identifier

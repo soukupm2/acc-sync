@@ -2,7 +2,7 @@
 
 namespace AccSync\FlexiBee\Data;
 
-use AccSync\FlexiBee\UrlFilter\Condition;
+use AccSync\FlexiBee\UrlFilter\FlexiBeeCondition;
 
 /**
  * Class FlexiBeeHelper
@@ -17,12 +17,17 @@ class FlexiBeeHelper
      * Number of conditions is unlimited and is joined by the same operator
      * Joining with different operators can be done by using this function multiple times
      *
-     * @param string $operator
-     * @param string|Condition ...$conditions
+     * @param string                   $operator
+     * @param string|FlexiBeeCondition ...$conditions
      * @return string
      */
     public static function joinConditions($operator, ...$conditions)
     {
+        if (empty($conditions))
+        {
+            return NULL;
+        }
+
         $result = '(';
 
         $iteration = 1;
@@ -30,7 +35,7 @@ class FlexiBeeHelper
 
         foreach ($conditions as $condition)
         {
-            if ($condition instanceof Condition)
+            if ($condition instanceof FlexiBeeCondition)
             {
                 $result .= $condition->getFullCondition();
             }
