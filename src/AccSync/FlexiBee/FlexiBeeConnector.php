@@ -12,6 +12,7 @@ use AccSync\FlexiBee\Requests\GetDataRequest\IssuedInvoiceRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\PriceListRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\ReceivedInvoiceRequest;
 use AccSync\FlexiBee\Requests\SendDataRequest\BaseSendDataRequest;
+use AccSync\FlexiBee\Requests\SendDataRequest\SendIssuedInvoiceRequest;
 use AccSync\FlexiBee\Requests\SendDataRequest\SendPriceItemRequest;
 
 /**
@@ -243,6 +244,16 @@ class FlexiBeeConnector extends Connector
     public function sendPriceListItem()
     {
         $this->request = new SendPriceItemRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return SendIssuedInvoiceRequest
+     */
+    public function sendIssuedInvoiceRequest()
+    {
+        $this->request = new SendIssuedInvoiceRequest();
 
         return $this->request;
     }

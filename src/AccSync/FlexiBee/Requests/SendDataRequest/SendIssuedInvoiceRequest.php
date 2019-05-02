@@ -57,14 +57,6 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
      */
     private $currency;
     /**
-     * @var string $currencyShowAs
-     */
-    private $currencyShowAs;
-    /**
-     * @var int $currencyRef
-     */
-    private $currencyRef;
-    /**
      * @var string $company
      */
     private $company;
@@ -86,8 +78,6 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
         'totalAmountInCurrency' => 'zbyvaUhraditMen',
         'leftToPay' => 'zbyvaUhradit',
         'currency' => 'mena',
-        'currencyShowAs' => 'mena@showAs',
-        'currencyRef' => 'mena@ref',
         'company' => 'firma',
         'description' => 'popis',
     ];
@@ -228,26 +218,6 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
     public function setDescription($description)
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @param string $currencyShowAs
-     */
-    public function setCurrencyShowAs($currencyShowAs)
-    {
-        $this->currencyShowAs = $currencyShowAs;
-
-        return $this;
-    }
-
-    /**
-     * @param int $currencyRef
-     */
-    public function setCurrencyRef($currencyRef)
-    {
-        $this->currencyRef = $currencyRef;
 
         return $this;
     }

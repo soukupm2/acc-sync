@@ -10,7 +10,7 @@ namespace AccSync\FlexiBee\Requests\GetDataRequest;
  */
 class IssuedInvoiceRequest extends BaseGetDataRequest
 {
-    const REGISTER = 'faktura-prijata';
+    const REGISTER = 'faktura-vydana';
 
     protected $register = self::REGISTER;
 }
