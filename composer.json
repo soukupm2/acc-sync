@@ -19,7 +19,7 @@
         "ext-simplexml": "*"
     },
     "autoload": {
-        "psr-4": {
+        "psr-0": {
             "AccSync": "src/"
         }
     },
