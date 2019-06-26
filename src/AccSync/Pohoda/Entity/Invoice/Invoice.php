@@ -46,7 +46,7 @@ class Invoice
      */
     public function getInvoiceHeader()
     {
-        return $this->invoiceHeader;
+        return empty($this->invoiceHeader) ? new InvoiceHeader() : $this->invoiceHeader;
     }
 
     /**
@@ -62,7 +62,7 @@ class Invoice
      */
     public function getInvoiceDetail()
     {
-        return $this->invoiceDetail;
+        return empty($this->invoiceDetail) ? new InvoiceDetail() : $this->invoiceDetail;
     }
 
     /**
@@ -78,7 +78,7 @@ class Invoice
      */
     public function getInvoiceSummary()
     {
-        return $this->invoiceSummary;
+        return empty($this->invoiceSummary) ? new InvoiceSummary() : $this->invoiceSummary;
     }
 
     /**

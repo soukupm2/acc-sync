@@ -1,5 +1,10 @@
 <?php
 
+use AccSync\Pohoda\Collection\Invoice\InvoicesCollection;
+use AccSync\Pohoda\Entity\Invoice\Invoice;
+use AccSync\Pohoda\Entity\Invoice\InvoiceHeader;
+use AccSync\Pohoda\Entity\Invoice\InvoiceSummary;
+
 require './vendor/autoload.php';
 
 /**
@@ -186,11 +191,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Stock/zasoby_01_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -226,11 +227,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Stock/zasoby_02_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -266,11 +263,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Stock/zasoby_03_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -306,11 +299,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Stock/zasoby_04_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -346,11 +335,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Stock/zasoby_05_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -397,11 +382,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Orders/objednavky_01_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -442,11 +423,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Orders/objednavky_02_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -487,11 +464,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Orders/objednavky_02_v2.0_issued_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -532,11 +505,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Invoices/faktury_02_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -577,11 +546,7 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Invoices/faktury_03_v2.0_response.xml');
-
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
-
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $this->assertFalse($connection->hasError());
     }
 
     /**
@@ -624,10 +589,43 @@ class PohodaTest extends PHPUnit_Framework_TestCase
 
         $connection->sendRequest();
 
-        $dom = $this->loadTemplate('PohodaXML/Invoices/faktury_04_v2.0_response.xml');
+        $this->assertFalse($connection->hasError());
+    }
 
-        $this->assertEqualXMLStructure($dom->documentElement, $connection->getDOMResponse()->documentElement);
+    /**
+     * Test sending a invoice into the pohoda system
+     */
+    public function testSendInvoiceIntoPohoda()
+    {
+        $connection = $this->createProperConnection();
 
-        $this->checkXmlValues($dom->saveXML(), $connection->getDOMResponse()->saveXML());
+        $invoiceHeader = new InvoiceHeader();
+        $invoiceHeader->setInvoiceType('issuedInvoice');
+        $invoiceHeader->setDate(new \DateTime('2018-12-10'));
+        $invoiceHeader->setAccountingIds('3Fv');
+        $invoiceHeader->setText('testovaci zaznam');
+        $invoiceHeader->setClassificationVatType('inland');
+        $invoiceHeader->setPaymentType('draft');
+        $invoiceHeader->setAccountIds('KB');
+        $invoiceHeader->setNote('import test');
+
+        $invoiceSummary = new InvoiceSummary();
+        $invoiceSummary->setRoundingDocument('math2one');
+        $invoiceSummary->setPriceNone(3018);
+        $invoiceSummary->setPriceLow(60000);
+        $invoiceSummary->setPriceHighSum(557);
+        $invoiceSummary->setPriceRound(0);
+
+        $invoice = new Invoice($invoiceHeader);
+        $invoice->setInvoiceSummary($invoiceSummary);
+
+        $invoicesCollection = new InvoicesCollection();
+        $invoicesCollection->add($invoice);
+
+        $connection->setSendInvoiceRequest($invoicesCollection);
+
+        $connection->sendRequest();
+
+        $this->assertFalse($connection->hasError());
     }
 }

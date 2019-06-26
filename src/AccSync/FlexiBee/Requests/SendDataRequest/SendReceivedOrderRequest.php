@@ -2,9 +2,9 @@
 
 namespace AccSync\FlexiBee\Requests\SendDataRequest;
 
-class SendIssuedInvoiceRequest extends BaseSendDataRequest
+class SendReceivedOrderRequest extends BaseSendDataRequest
 {
-    const REGISTER = 'faktura-prijata';
+    const REGISTER = 'objednavka-prijata';
 
     protected $register = self::REGISTER;
 
@@ -17,41 +17,17 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
      */
     private $code;
     /**
-     * @var string $paidToDate
-     */
-    private $paidToDate;
-    /**
      * @var string $dateOfIssue
      */
     private $dateOfIssue;
-    /**
-     * @var string $dueDate
-     */
-    private $dueDate;
     /**
      * @var float $totalAmount
      */
     private $totalAmount;
     /**
-     * @var float $depositAmount
-     */
-    private $depositAmount;
-    /**
-     * @var float $depositAmountInCurrency
-     */
-    private $depositAmountInCurrency;
-    /**
      * @var float $totalAmountInCurrency
      */
     private $totalAmountInCurrency;
-    /**
-     * @var float $leftToPay
-     */
-    private $leftToPay;
-    /**
-     * @var float $leftToPayInCurrency
-     */
-    private $leftToPayInCurrency;
     /**
      * @var string $currency
      */
@@ -69,27 +45,18 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
      */
     private $type;
     /**
-     * @var string $receivedNumber
-     */
-    private $receivedNumber;
-    /**
      * @var array $aliases
      */
     protected $aliases = [
         'code' => 'kod',
         'paidToDate' => 'stavUhrK',
         'dateOfIssue' => 'datVyst',
-        'dueDate' => 'datSplat',
         'totalAmount' => 'sumCelkem',
-        'depositAmount' => 'sumZalohy',
-        'depositAmountInCurrency' => 'sumZalohyMen',
         'totalAmountInCurrency' => 'zbyvaUhraditMen',
-        'leftToPay' => 'zbyvaUhradit',
         'currency' => 'mena',
         'company' => 'firma',
         'description' => 'popis',
         'type' => 'typDokl',
-        'receivedNumber' => 'cisDosle',
     ];
 
     /**
@@ -113,31 +80,11 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
     }
 
     /**
-     * @param string $paidToDate
-     */
-    public function setPaidToDate($paidToDate)
-    {
-        $this->paidToDate = $paidToDate;
-
-        return $this;
-    }
-
-    /**
      * @param string $dateOfIssue
      */
     public function setDateOfIssue($dateOfIssue)
     {
         $this->dateOfIssue = $dateOfIssue;
-
-        return $this;
-    }
-
-    /**
-     * @param string $dueDate
-     */
-    public function setDueDate($dueDate)
-    {
-        $this->dueDate = $dueDate;
 
         return $this;
     }
@@ -153,51 +100,11 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
     }
 
     /**
-     * @param float $depositAmount
-     */
-    public function setDepositAmount($depositAmount)
-    {
-        $this->depositAmount = $depositAmount;
-
-        return $this;
-    }
-
-    /**
-     * @param float $depositAmountInCurrency
-     */
-    public function setDepositAmountInCurrency($depositAmountInCurrency)
-    {
-        $this->depositAmountInCurrency = $depositAmountInCurrency;
-
-        return $this;
-    }
-
-    /**
      * @param float $totalAmountInCurrency
      */
     public function setTotalAmountInCurrency($totalAmountInCurrency)
     {
         $this->totalAmountInCurrency = $totalAmountInCurrency;
-
-        return $this;
-    }
-
-    /**
-     * @param float $leftToPay
-     */
-    public function setLeftToPay($leftToPay)
-    {
-        $this->leftToPay = $leftToPay;
-
-        return $this;
-    }
-
-    /**
-     * @param float $leftToPayInCurrency
-     */
-    public function setLeftToPayInCurrency($leftToPayInCurrency)
-    {
-        $this->leftToPayInCurrency = $leftToPayInCurrency;
 
         return $this;
     }
@@ -240,14 +147,6 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
         $this->type = $type;
 
         return $this;
-    }
-
-    /**
-     * @param string $receivedNumber
-     */
-    public function setReceivedNumber($receivedNumber)
-    {
-        $this->receivedNumber = $receivedNumber;
     }
 
     /**

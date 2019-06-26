@@ -46,7 +46,7 @@ class Order
      */
     public function getOrderHeader()
     {
-        return $this->orderHeader;
+        return empty($this->orderHeader) ? new OrderHeader() : $this->orderHeader;
     }
 
     /**
@@ -62,7 +62,7 @@ class Order
      */
     public function getOrderDetail()
     {
-        return $this->orderDetail;
+        return empty($this->orderDetail) ? new OrderDetail() : $this->orderDetail;
     }
 
     /**
@@ -78,7 +78,7 @@ class Order
      */
     public function getOrderSummary()
     {
-        return $this->orderSummary;
+        return empty($this->orderSummary) ? new OrderSummary() : $this->orderSummary;
     }
 
     /**

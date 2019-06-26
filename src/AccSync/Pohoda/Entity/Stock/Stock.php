@@ -40,7 +40,7 @@ class Stock
      */
     public function getStockHeader()
     {
-        return $this->stockHeader;
+        return empty($this->stockHeader) ? new StockHeader() : $this->stockHeader;
     }
 
     /**
@@ -56,7 +56,7 @@ class Stock
      */
     public function getStockPriceItem()
     {
-        return $this->stockPriceItem;
+        return empty($this->stockPriceItem) ? new StockItemPricesCollection() : $this->stockPriceItem;
     }
 
     /**

@@ -149,4 +149,9 @@ abstract class Connector
      * Function that sets up parameters $hasError and $error
      */
     abstract protected function setUpError();
+
+    /**
+     * Function that sends request to accounting system
+     */
+    abstract public function sendRequest();
 }

@@ -2,9 +2,9 @@
 
 namespace AccSync\FlexiBee\Requests\SendDataRequest;
 
-class SendIssuedInvoiceRequest extends BaseSendDataRequest
+class SendReceivedInvoiceRequest extends BaseSendDataRequest
 {
-    const REGISTER = 'faktura-prijata';
+    const REGISTER = 'faktura-vydana';
 
     protected $register = self::REGISTER;
 
@@ -16,10 +16,6 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
      * @var string $code
      */
     private $code;
-    /**
-     * @var string $paidToDate
-     */
-    private $paidToDate;
     /**
      * @var string $dateOfIssue
      */
@@ -73,6 +69,10 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
      */
     private $receivedNumber;
     /**
+     * @var string $receivedNumber
+     */
+    private $variableSymbol;
+    /**
      * @var array $aliases
      */
     protected $aliases = [
@@ -90,6 +90,7 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
         'description' => 'popis',
         'type' => 'typDokl',
         'receivedNumber' => 'cisDosle',
+        'variableSymbol' => 'varSym',
     ];
 
     /**
@@ -248,6 +249,18 @@ class SendIssuedInvoiceRequest extends BaseSendDataRequest
     public function setReceivedNumber($receivedNumber)
     {
         $this->receivedNumber = $receivedNumber;
+
+        return $this;
+    }
+
+    /**
+     * @param string $variableSymbol
+     */
+    public function setVariableSymbol($variableSymbol)
+    {
+        $this->variableSymbol = $variableSymbol;
+
+        return $this;
     }
 
     /**

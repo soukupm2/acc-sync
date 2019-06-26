@@ -76,11 +76,6 @@ class SendInvoiceRequest extends BaseRequest
      */
     private function setInvoiceDetail(\SimpleXMLElement $xmlRoot, InvoiceDetail $detail)
     {
-        if (empty($detail))
-        {
-            return;
-        }
-
         $invDetail = $xmlRoot->addChild('inv:invoiceDetail', NULL, self::INVOICE_NAMESPACE);
 
         /** @var InvoiceItem $item */
@@ -132,44 +127,50 @@ class SendInvoiceRequest extends BaseRequest
             {
                 $xmlItem->addChild('inv:discountPercentage', $item->getDiscountPercentage(), self::INVOICE_NAMESPACE);
             }
-            if (!empty($item->getHomeCurrencyPrice()) || !empty($item->getHomeCurrencyPriceSum()) || !empty($item->getHomeCurrencyPriceVAT()) || !empty($item->getHomeCurrencyUnitPrice()))
+            if (is_numeric($item->getHomeCurrencyPrice()) || is_numeric($item->getHomeCurrencyPriceSum())
+                || is_numeric($item->getHomeCurrencyPriceVAT()) || is_numeric($item->getHomeCurrencyUnitPrice())
+                || !empty($item->getHomeCurrencyPrice()) || !empty($item->getHomeCurrencyPriceSum())
+                || !empty($item->getHomeCurrencyPriceVAT()) || !empty($item->getHomeCurrencyUnitPrice()))
             {
                 $homeCurrency = $xmlItem->addChild('inv:homeCurrency', NULL, self::INVOICE_NAMESPACE);
 
-                if (!empty($item->getHomeCurrencyPrice()))
+                if (is_numeric($item->getHomeCurrencyPrice()) || !empty($item->getHomeCurrencyPrice()))
                 {
                     $homeCurrency->addChild('typ:price', $item->getHomeCurrencyPrice(), self::TYPE_NAMESPACE);
                 }
-                if (!empty($item->getHomeCurrencyPriceSum()))
+                if (is_numeric($item->getHomeCurrencyPriceSum()) || !empty($item->getHomeCurrencyPriceSum()))
                 {
                     $homeCurrency->addChild('typ:priceSum', $item->getHomeCurrencyPriceSum(), self::TYPE_NAMESPACE);
                 }
-                if (!empty($item->getHomeCurrencyPriceVAT()))
+                if (is_numeric($item->getHomeCurrencyPriceVAT()) || !empty($item->getHomeCurrencyPriceVAT()))
                 {
                     $homeCurrency->addChild('typ:priceVAT', $item->getHomeCurrencyPriceVAT(), self::TYPE_NAMESPACE);
                 }
-                if (!empty($item->getHomeCurrencyUnitPrice()))
+                if (is_numeric($item->getHomeCurrencyUnitPrice()) || !empty($item->getHomeCurrencyUnitPrice()))
                 {
                     $homeCurrency->addChild('typ:unitPrice', $item->getHomeCurrencyUnitPrice(), self::TYPE_NAMESPACE);
                 }
             }
-            if (!empty($item->getForeignCurrencyPrice()) || !empty($item->getForeignCurrencyPriceSum()) || !empty($item->getForeignCurrencyPriceVAT()) || !empty($item->getForeignCurrencyUnitPrice()))
+            if (is_numeric($item->getForeignCurrencyPrice()) || is_numeric($item->getForeignCurrencyPriceSum())
+                || is_numeric($item->getForeignCurrencyPriceVAT()) || is_numeric($item->getForeignCurrencyUnitPrice())
+                || !empty($item->getForeignCurrencyPrice()) || !empty($item->getForeignCurrencyPriceSum())
+                || !empty($item->getForeignCurrencyPriceVAT()) || !empty($item->getForeignCurrencyUnitPrice()))
             {
                 $foreignCurrency = $xmlItem->addChild('inv:foreignCurrency', NULL, self::INVOICE_NAMESPACE);
 
-                if (!empty($item->getForeignCurrencyPrice()))
+                if (is_numeric($item->getForeignCurrencyPrice()) || !empty($item->getForeignCurrencyPrice()))
                 {
                     $foreignCurrency->addChild('typ:price', $item->getForeignCurrencyPrice(), self::TYPE_NAMESPACE);
                 }
-                if (!empty($item->getForeignCurrencyPriceSum()))
+                if (is_numeric($item->getForeignCurrencyPriceSum()) || !empty($item->getForeignCurrencyPriceSum()))
                 {
                     $foreignCurrency->addChild('typ:priceSum', $item->getForeignCurrencyPriceSum(), self::TYPE_NAMESPACE);
                 }
-                if (!empty($item->getForeignCurrencyPriceVAT()))
+                if (is_numeric($item->getForeignCurrencyPriceVAT()) || !empty($item->getForeignCurrencyPriceVAT()))
                 {
                     $foreignCurrency->addChild('typ:priceVAT', $item->getForeignCurrencyPriceVAT(), self::TYPE_NAMESPACE);
                 }
-                if (!empty($item->getForeignCurrencyUnitPrice()))
+                if (is_numeric($item->getForeignCurrencyUnitPrice()) || !empty($item->getForeignCurrencyUnitPrice()))
                 {
                     $foreignCurrency->addChild('typ:unitPrice', $item->getForeignCurrencyUnitPrice(), self::TYPE_NAMESPACE);
                 }
@@ -193,11 +194,6 @@ class SendInvoiceRequest extends BaseRequest
      */
     private function setInvoiceSummary(\SimpleXMLElement $xmlRoot, InvoiceSummary $summary)
     {
-        if (empty($summary))
-        {
-            return;
-        }
-
         $invSummary = $xmlRoot->addChild('inv:invoiceSummary', NULL, self::INVOICE_NAMESPACE);
 
         if (!empty($summary->getRoundingDocument()))
@@ -253,32 +249,35 @@ class SendInvoiceRequest extends BaseRequest
             $round->addChild('typ:round', $summary->getPriceRound(), self::TYPE_NAMESPACE);
         }
 
-        $foreignCurrency = $invSummary->addChild('inv:foreignCurrency', NULL, self::INVOICE_NAMESPACE);
-
         if (!empty($summary->getForeignCurrencyIds()) || !empty($summary->getForeignCurrencyId()))
         {
-            $currency = $foreignCurrency->addChild('typ:currency', NULL, self::TYPE_NAMESPACE);
+            $foreignCurrency = $invSummary->addChild('inv:foreignCurrency', NULL, self::INVOICE_NAMESPACE);
 
-            if (!empty($summary->getForeignCurrencyId()))
+            if (!empty($summary->getForeignCurrencyIds()) || !empty($summary->getForeignCurrencyId()))
             {
-                $currency->addChild('typ:id', $summary->getForeignCurrencyId(), self::TYPE_NAMESPACE);
+                $currency = $foreignCurrency->addChild('typ:currency', NULL, self::TYPE_NAMESPACE);
+
+                if (!empty($summary->getForeignCurrencyId()))
+                {
+                    $currency->addChild('typ:id', $summary->getForeignCurrencyId(), self::TYPE_NAMESPACE);
+                }
+                if (!empty($summary->getForeignCurrencyIds()))
+                {
+                    $currency->addChild('typ:ids', $summary->getForeignCurrencyIds(), self::TYPE_NAMESPACE);
+                }
             }
-            if (!empty($summary->getForeignCurrencyIds()))
+            if (is_numeric($summary->getForeignCurrencyAmount()) || !empty($summary->getForeignCurrencyAmount()))
             {
-                $currency->addChild('typ:ids', $summary->getForeignCurrencyIds(), self::TYPE_NAMESPACE);
+                $foreignCurrency->addChild('typ:amount', $summary->getForeignCurrencyAmount(), self::TYPE_NAMESPACE);
             }
-        }
-        if (!empty($summary->getForeignCurrencyAmount()))
-        {
-            $foreignCurrency->addChild('typ:amount', $summary->getForeignCurrencyAmount(), self::TYPE_NAMESPACE);
-        }
-        if (!empty($summary->getForeignCurrencyRate()))
-        {
-            $foreignCurrency->addChild('typ:rate', $summary->getForeignCurrencyRate(), self::TYPE_NAMESPACE);
-        }
-        if (!empty($summary->getForeignCurrencyPriceSum()))
-        {
-            $foreignCurrency->addChild('typ:priceSum', $summary->getForeignCurrencyPriceSum(), self::TYPE_NAMESPACE);
+            if (is_numeric($summary->getForeignCurrencyRate()) || !empty($summary->getForeignCurrencyRate()))
+            {
+                $foreignCurrency->addChild('typ:rate', $summary->getForeignCurrencyRate(), self::TYPE_NAMESPACE);
+            }
+            if (is_numeric($summary->getForeignCurrencyPriceSum()) || !empty($summary->getForeignCurrencyPriceSum()))
+            {
+                $foreignCurrency->addChild('typ:priceSum', $summary->getForeignCurrencyPriceSum(), self::TYPE_NAMESPACE);
+            }
         }
     }
 
@@ -290,11 +289,6 @@ class SendInvoiceRequest extends BaseRequest
      */
     private function setInvoiceHeader(\SimpleXMLElement $xmlRoot, InvoiceHeader $header)
     {
-        if (empty($header))
-        {
-            return;
-        }
-
         $invHeader = $xmlRoot->addChild('inv:invoiceHeader', NULL, self::INVOICE_NAMESPACE);
 
         if (!empty($header->getInvoiceType()))

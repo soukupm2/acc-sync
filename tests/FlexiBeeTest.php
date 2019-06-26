@@ -121,7 +121,7 @@ class FlexiBeeTest extends PHPUnit_Framework_TestCase
 
         $count = count($result);
 
-        $this->assertEquals('faktura-vydana', $request->getRegister());
+        $this->assertEquals('faktura-prijata', $request->getRegister());
         $this->assertLessThanOrEqual(10, $count);
         $this->assertEquals(FALSE, $connection->hasError());
     }
@@ -140,7 +140,45 @@ class FlexiBeeTest extends PHPUnit_Framework_TestCase
 
         $count = count($result);
 
-        $this->assertEquals('faktura-prijata', $request->getRegister());
+        $this->assertEquals('faktura-vydana', $request->getRegister());
+        $this->assertLessThanOrEqual(15, $count);
+        $this->assertEquals(FALSE, $connection->hasError());
+    }
+
+    /**
+     * Get issued invoices request test
+     */
+    public function testGetIssuedOrdersResponse()
+    {
+        $connection = $this->createProperConnection();
+
+        $request = $connection->getIssuedOrders()
+            ->setLimit(15);
+
+        $result = $connection->sendRequest();
+
+        $count = count($result);
+
+        $this->assertEquals('objednavka-vydana', $request->getRegister());
+        $this->assertLessThanOrEqual(15, $count);
+        $this->assertEquals(FALSE, $connection->hasError());
+    }
+
+    /**
+     * Get issued invoices request test
+     */
+    public function testGetReceivedOrdersResponse()
+    {
+        $connection = $this->createProperConnection();
+
+        $request = $connection->getReceivedOrders()
+            ->setLimit(15);
+
+        $result = $connection->sendRequest();
+
+        $count = count($result);
+
+        $this->assertEquals('objednavka-prijata', $request->getRegister());
         $this->assertLessThanOrEqual(15, $count);
         $this->assertEquals(FALSE, $connection->hasError());
     }
@@ -209,6 +247,27 @@ class FlexiBeeTest extends PHPUnit_Framework_TestCase
             ->setName('testing')
             ->setBasePrice(100)
             ->setVatRate(20);
+
+        $connection->sendRequest();
+
+        $this->assertEquals(FALSE, $connection->hasError());
+    }
+
+    /**
+     * Send issude invoce item test
+     */
+    public function testSendIssuedInvoiceItem()
+    {
+        $connection = $this->createProperConnection();
+
+        $connection->sendIssuedInvoiceRequest()
+            ->setId(140)
+            ->setCode('00000005/19-1')
+            ->setDescription('testing')
+            ->setLeftToPay(100)
+            ->setType('code:FAKTURA')
+            ->setDueDate('2019')
+            ->setReceivedNumber(1234);
 
         $connection->sendRequest();
 

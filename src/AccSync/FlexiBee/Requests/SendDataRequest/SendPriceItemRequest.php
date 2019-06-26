@@ -140,7 +140,10 @@ class SendPriceItemRequest extends BaseSendDataRequest
 
         if (!empty($this->additionalData) && is_array($this->additionalData))
         {
-            $this->rawData = array_merge($this->rawData, $this->additionalData);
+            foreach ($this->additionalData[$this->rootKey][$this->getRegister()] as $key => $value)
+            {
+                $this->rawData[$this->rootKey][$this->getRegister()][$key] = $value;
+            }
         }
     }
 }

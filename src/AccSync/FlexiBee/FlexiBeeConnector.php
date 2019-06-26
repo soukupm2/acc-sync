@@ -9,11 +9,16 @@ use AccSync\FlexiBee\Exception\FlexiBeeConnectionException;
 use AccSync\FlexiBee\Requests\BaseRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\BaseGetDataRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\IssuedInvoiceRequest;
+use AccSync\FlexiBee\Requests\GetDataRequest\IssuedOrdersRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\PriceListRequest;
 use AccSync\FlexiBee\Requests\GetDataRequest\ReceivedInvoiceRequest;
+use AccSync\FlexiBee\Requests\GetDataRequest\ReceivedOrdersRequest;
 use AccSync\FlexiBee\Requests\SendDataRequest\BaseSendDataRequest;
 use AccSync\FlexiBee\Requests\SendDataRequest\SendIssuedInvoiceRequest;
+use AccSync\FlexiBee\Requests\SendDataRequest\SendIssuedOrderRequest;
 use AccSync\FlexiBee\Requests\SendDataRequest\SendPriceItemRequest;
+use AccSync\FlexiBee\Requests\SendDataRequest\SendReceivedInvoiceRequest;
+use AccSync\FlexiBee\Requests\SendDataRequest\SendReceivedOrderRequest;
 
 /**
  * Class FlexiBeeConnector
@@ -219,6 +224,16 @@ class FlexiBeeConnector extends Connector
     }
 
     /**
+     * @return IssuedOrdersRequest
+     */
+    public function getIssuedOrders()
+    {
+        $this->request = new IssuedOrdersRequest();
+
+        return $this->request;
+    }
+
+    /**
      * @return PriceListRequest
      */
     public function getPriceList()
@@ -239,6 +254,16 @@ class FlexiBeeConnector extends Connector
     }
 
     /**
+     * @return ReceivedOrdersRequest
+     */
+    public function getReceivedOrders()
+    {
+        $this->request = new ReceivedOrdersRequest();
+
+        return $this->request;
+    }
+
+    /**
      * @return SendPriceItemRequest
      */
     public function sendPriceListItem()
@@ -254,6 +279,36 @@ class FlexiBeeConnector extends Connector
     public function sendIssuedInvoiceRequest()
     {
         $this->request = new SendIssuedInvoiceRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return SendReceivedInvoiceRequest
+     */
+    public function sendReceivedInvoiceRequest()
+    {
+        $this->request = new SendReceivedInvoiceRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return SendReceivedOrderRequest
+     */
+    public function sendReceivedOrderRequest()
+    {
+        $this->request = new SendReceivedOrderRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return SendIssuedOrderRequest
+     */
+    public function sendIssuedOrderRequest()
+    {
+        $this->request = new SendIssuedOrderRequest();
 
         return $this->request;
     }

@@ -22,7 +22,7 @@ class InvoiceDetail
      */
     public function getInvoiceItemsCollection()
     {
-        return $this->invoiceItemsCollection;
+        return empty($this->invoiceItemsCollection) ? new InvoiceItemsCollection() : $this->invoiceItemsCollection;
     }
 
     /**
